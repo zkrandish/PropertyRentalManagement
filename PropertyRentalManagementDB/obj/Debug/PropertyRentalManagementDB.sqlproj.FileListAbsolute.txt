@@ -1,0 +1,6 @@
+C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\bin\Debug\PropertyRentalManagementDB.dacpac
+C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\bin\Debug\PropertyRentalManagementDB.dll
+C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\bin\Debug\PropertyRentalManagementDB.pdb
+C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\PropertyRentalManagementDB.sqlproj.AssemblyReference.cache
+C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\PropertyRentalManagementDB.dll
+C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\PropertyRentalManagementDB.pdb
