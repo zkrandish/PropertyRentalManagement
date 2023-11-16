@@ -6,15 +6,12 @@
     <edmx:Diagrams>
       <Diagram DiagramId="5929eb777e2a413888db8a971d66fd28" Name="Diagram1">
         <EntityTypeShape EntityType="PropertyRentalManagementDBModel.C__RefactorLog" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Apartment" Width="1.5" PointX="8.875" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Appointment" Width="1.5" PointX="0.625" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Building" Width="1.5" PointX="6.125" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Message" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Status" Width="1.5" PointX="5.625" PointY="7.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PropertyRentalManagementDBModel.User" Width="1.5" PointX="3.75" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="PropertyRentalManagementDBModel.UserType" Width="1.5" PointX="0.5" PointY="7.375" IsExpanded="true" />
-        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4" ManuallyRouted="false" />
-        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED" ManuallyRouted="false" />
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Appointme__Recei__33D4B598" ManuallyRouted="false" />
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Appointme__Sende__34C8D9D1" ManuallyRouted="false" />
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Buildings__UserI__35BCFE0A" ManuallyRouted="false" />
@@ -22,6 +19,10 @@
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Messages__Sender__398D8EEE" ManuallyRouted="false" />
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Users__StatusId__3A81B327" ManuallyRouted="false" />
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Users__UserTypeI__3B75D760" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Apartment" Width="1.5" PointX="8.375" PointY="4.625" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK_Apartments_Tenants" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

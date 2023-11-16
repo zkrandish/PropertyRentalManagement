@@ -28,31 +28,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         public ActionResult Login(LoginViewModel model)
         {
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(model);
-            //}
-
-            //var hashedPassword = HashPassword(model.Password);
-
-
-            //var user = db.Users.FirstOrDefault(u => u.UserName == model.Username && u.Password == hashedPassword);
-            //if (user != null)
-            //{
-            //    // Check the role of the user and set the session or authentication cookie accordingly
-            //    var userRole = user.UserType.UserRole;
-
-            //    FormsAuthentication.SetAuthCookie(user.UserName.ToString(), false);
-
-            //    Session["UserRole"] = userRole;
-
-            //    Session["UserName"] = user.UserName;
-
-            //    return RedirectToAction("Index", "Home"); 
-            //}
-            //// If we got this far, something failed, redisplay form
-            //ModelState.AddModelError("", "Invalid username or password.");
-            //return View(model);
+        
             var hashedPassword = HashPassword(model.Password);
             bool userExist = db.Users.Any(x => x.UserName == model.Username && x.Password == hashedPassword);
             User user = db.Users.FirstOrDefault(x => x.UserName == model.Username && x.Password == hashedPassword);
@@ -61,6 +37,10 @@ namespace PropertyRentalManagementWebSite.Controllers
                 var userRole = user.UserType.UserRole;
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
                 Session["UserRole"] = userRole;
+                if(userRole == "Manager")
+                {
+                    return RedirectToAction("Index", "ManagerDashboard");
+                }
                 
                 return RedirectToAction("Index", "Home");
             }

@@ -8,18 +8,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Apartments">
-      <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Apartment">
-        <MappingFragment StoreEntitySet="Apartments">
-          <ScalarProperty Name="ApartmentId" ColumnName="ApartmentId" />
-          <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
-          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Appointments">
       <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Appointment">
         <MappingFragment StoreEntitySet="Appointments">
@@ -82,6 +70,19 @@
         <MappingFragment StoreEntitySet="UserTypes">
           <ScalarProperty Name="UserTypeId" ColumnName="UserTypeId" />
           <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Apartments">
+      <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Apartment">
+        <MappingFragment StoreEntitySet="Apartments">
+          <ScalarProperty Name="TenantId" ColumnName="TenantId" />
+          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
+          <ScalarProperty Name="ApartmentId" ColumnName="ApartmentId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -132,6 +132,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BuildingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagerDashboardController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -148,11 +149,20 @@
     <Compile Include="Models\C__RefactorLog.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserPartial.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Models\Message.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Status.cs">
+      <DependentUpon>PRMModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>PRMModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserPartial.cs" />
+    <Compile Include="Models\UserType.cs">
+      <DependentUpon>PRMModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Models\PRMModels.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -167,15 +177,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PRMModels.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Status.cs">
-      <DependentUpon>PRMModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\User.cs">
-      <DependentUpon>PRMModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserType.cs">
-      <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -258,10 +259,11 @@
     <Content Include="Views\Buildings\Details.cshtml" />
     <Content Include="Views\Buildings\Edit.cshtml" />
     <Content Include="Views\Buildings\Index.cshtml" />
+    <Content Include="Views\ManagerDashboard\Index.cshtml" />
+    <Content Include="Views\ManagerDashboard\UnauthorizedAccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

@@ -17,12 +17,13 @@ namespace PropertyRentalManagementWebSite.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Apartments = new HashSet<Apartment>();
             this.Appointments = new HashSet<Appointment>();
             this.Appointments1 = new HashSet<Appointment>();
             this.Buildings = new HashSet<Building>();
             this.Messages = new HashSet<Message>();
             this.Messages1 = new HashSet<Message>();
+            this.Apartments = new HashSet<Apartment>();
+            this.Apartments1 = new HashSet<Apartment>();
         }
     
         public int UserId { get; set; }
@@ -35,8 +36,6 @@ namespace PropertyRentalManagementWebSite.Models
         public string Email { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Apartment> Apartments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Appointment> Appointments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Appointment> Appointments1 { get; set; }
@@ -48,5 +47,9 @@ namespace PropertyRentalManagementWebSite.Models
         public virtual ICollection<Message> Messages1 { get; set; }
         public virtual Status Status { get; set; }
         public virtual UserType UserType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Apartment> Apartments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Apartment> Apartments1 { get; set; }
     }
 }

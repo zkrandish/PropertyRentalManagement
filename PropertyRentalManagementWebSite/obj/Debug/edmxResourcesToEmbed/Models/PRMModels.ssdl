@@ -15,7 +15,8 @@
     <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="StatusId" Type="int" Nullable="false" />
     <Property Name="Price" Type="decimal" Precision="19" Scale="4" Nullable="false" />
-    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="ManagerId" Type="int" Nullable="false" />
+    <Property Name="TenantId" Type="int" />
   </EntityType>
   <EntityType Name="Appointments">
     <Key>
@@ -100,7 +101,7 @@
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="Apartments">
-        <PropertyRef Name="UserId" />
+        <PropertyRef Name="ManagerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -188,6 +189,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Apartments_Tenants">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Apartments" Type="Self.Apartments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Apartments">
+        <PropertyRef Name="TenantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="PropertyRentalManagementDBModelStoreContainer">
     <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Apartments" EntityType="Self.Apartments" Schema="dbo" store:Type="Tables" />
@@ -232,6 +245,10 @@
     <AssociationSet Name="FK__Users__UserTypeI__3B75D760" Association="Self.FK__Users__UserTypeI__3B75D760">
       <End Role="UserTypes" EntitySet="UserTypes" />
       <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Apartments_Tenants" Association="Self.FK_Apartments_Tenants">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Apartments" EntitySet="Apartments" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

@@ -19,9 +19,11 @@ namespace PropertyRentalManagementWebSite.Models
         public string Type { get; set; }
         public int StatusId { get; set; }
         public decimal Price { get; set; }
-        public int UserId { get; set; }
+        public int ManagerId { get; set; }
+        public Nullable<int> TenantId { get; set; }
     
         public virtual Building Building { get; set; }
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

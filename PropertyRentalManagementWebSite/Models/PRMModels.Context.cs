@@ -26,12 +26,12 @@ namespace PropertyRentalManagementWebSite.Models
         }
     
         public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
-        public virtual DbSet<Apartment> Apartments { get; set; }
         public virtual DbSet<Appointment> Appointments { get; set; }
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<Apartment> Apartments { get; set; }
     }
 }

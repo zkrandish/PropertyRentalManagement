@@ -20,7 +20,8 @@
           <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="StatusId" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ManagerId" Type="int" Nullable="false" />
+          <Property Name="TenantId" Type="int" />
         </EntityType>
         <EntityType Name="Appointments">
           <Key>
@@ -105,7 +106,7 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Apartments">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="ManagerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -193,6 +194,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Apartments_Tenants">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Apartments" Type="Self.Apartments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Apartments">
+              <PropertyRef Name="TenantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="PropertyRentalManagementDBModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Apartments" EntityType="Self.Apartments" Schema="dbo" store:Type="Tables" />
@@ -238,6 +251,10 @@
             <End Role="UserTypes" EntitySet="UserTypes" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_Apartments_Tenants" Association="Self.FK_Apartments_Tenants">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Apartments" EntitySet="Apartments" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -248,19 +265,6 @@
             <PropertyRef Name="OperationKey" />
           </Key>
           <Property Name="OperationKey" Type="Guid" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Apartment">
-          <Key>
-            <PropertyRef Name="ApartmentId" />
-          </Key>
-          <Property Name="ApartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BuildingId" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Building" Relationship="Self.FK__Apartment__Build__300424B4" FromRole="Apartments" ToRole="Buildings" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Apartment__UserI__30F848ED" FromRole="Apartments" ToRole="Users" />
         </EntityType>
         <EntityType Name="Appointment">
           <Key>
@@ -285,8 +289,8 @@
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Apartments" Relationship="Self.FK__Apartment__Build__300424B4" FromRole="Buildings" ToRole="Apartments" />
           <NavigationProperty Name="User" Relationship="Self.FK__Buildings__UserI__35BCFE0A" FromRole="Buildings" ToRole="Users" />
+          <NavigationProperty Name="Apartments" Relationship="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4" FromRole="Building" ToRole="Apartment" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -318,7 +322,6 @@
           <Property Name="Password" Type="Binary" MaxLength="256" FixedLength="false" Nullable="false" />
           <Property Name="StatusId" Type="Int32" Nullable="false" />
           <Property Name="UserTypeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Apartments" Relationship="Self.FK__Apartment__UserI__30F848ED" FromRole="Users" ToRole="Apartments" />
           <NavigationProperty Name="Appointments" Relationship="Self.FK__Appointme__Recei__33D4B598" FromRole="Users" ToRole="Appointments" />
           <NavigationProperty Name="Appointments1" Relationship="Self.FK__Appointme__Sende__34C8D9D1" FromRole="Users" ToRole="Appointments" />
           <NavigationProperty Name="Buildings" Relationship="Self.FK__Buildings__UserI__35BCFE0A" FromRole="Users" ToRole="Buildings" />
@@ -328,6 +331,8 @@
           <NavigationProperty Name="UserType" Relationship="Self.FK__Users__UserTypeI__3B75D760" FromRole="Users" ToRole="UserTypes" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Apartments" Relationship="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED" FromRole="User" ToRole="Apartment" />
+          <NavigationProperty Name="Apartments1" Relationship="PropertyRentalManagementDBModel.FK_Apartments_Tenants" FromRole="User" ToRole="Apartment" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -337,34 +342,6 @@
           <Property Name="UserRole" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Users__UserTypeI__3B75D760" FromRole="UserTypes" ToRole="Users" />
         </EntityType>
-        <Association Name="FK__Apartment__Build__300424B4">
-          <End Role="Buildings" Type="Self.Building" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Apartments" Type="Self.Apartment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Buildings">
-              <PropertyRef Name="BuildingId" />
-            </Principal>
-            <Dependent Role="Apartments">
-              <PropertyRef Name="BuildingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Apartment__UserI__30F848ED">
-          <End Role="Users" Type="Self.User" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Apartments" Type="Self.Apartment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Apartments">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Appointme__Recei__33D4B598">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Appointments" Type="Self.Appointment" Multiplicity="*" />
@@ -451,21 +428,12 @@
         </Association>
         <EntityContainer Name="PropertyRentalManagementDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__RefactorLog" EntityType="Self.C__RefactorLog" />
-          <EntitySet Name="Apartments" EntityType="Self.Apartment" />
           <EntitySet Name="Appointments" EntityType="Self.Appointment" />
           <EntitySet Name="Buildings" EntityType="Self.Building" />
           <EntitySet Name="Messages" EntityType="Self.Message" />
           <EntitySet Name="Statuses" EntityType="Self.Status" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
-          <AssociationSet Name="FK__Apartment__Build__300424B4" Association="Self.FK__Apartment__Build__300424B4">
-            <End Role="Buildings" EntitySet="Buildings" />
-            <End Role="Apartments" EntitySet="Apartments" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Apartment__UserI__30F848ED" Association="Self.FK__Apartment__UserI__30F848ED">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Apartments" EntitySet="Apartments" />
-          </AssociationSet>
           <AssociationSet Name="FK__Appointme__Recei__33D4B598" Association="Self.FK__Appointme__Recei__33D4B598">
             <End Role="Users" EntitySet="Users" />
             <End Role="Appointments" EntitySet="Appointments" />
@@ -494,7 +462,75 @@
             <End Role="UserTypes" EntitySet="UserTypes" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="Apartments" EntityType="PropertyRentalManagementDBModel.Apartment" />
+          <AssociationSet Name="FK__Apartment__Build__300424B4" Association="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4">
+            <End Role="Building" EntitySet="Buildings" />
+            <End Role="Apartment" EntitySet="Apartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Apartment__UserI__30F848ED" Association="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Apartment" EntitySet="Apartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Apartments_Tenants" Association="PropertyRentalManagementDBModel.FK_Apartments_Tenants">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Apartment" EntitySet="Apartments" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Apartment">
+          <Key>
+            <PropertyRef Name="ApartmentId" />
+          </Key>
+          <Property Name="ApartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuildingId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ManagerId" Type="Int32" Nullable="false" />
+          <Property Name="TenantId" Type="Int32" />
+          <NavigationProperty Name="Building" Relationship="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4" FromRole="Apartment" ToRole="Building" />
+          <NavigationProperty Name="User" Relationship="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED" FromRole="Apartment" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="PropertyRentalManagementDBModel.FK_Apartments_Tenants" FromRole="Apartment" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__Apartment__Build__300424B4">
+          <End Type="PropertyRentalManagementDBModel.Building" Role="Building" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PropertyRentalManagementDBModel.Apartment" Role="Apartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Building">
+              <PropertyRef Name="BuildingId" />
+            </Principal>
+            <Dependent Role="Apartment">
+              <PropertyRef Name="BuildingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Apartment__UserI__30F848ED">
+          <End Type="PropertyRentalManagementDBModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PropertyRentalManagementDBModel.Apartment" Role="Apartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Apartment">
+              <PropertyRef Name="ManagerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Apartments_Tenants">
+          <End Type="PropertyRentalManagementDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="PropertyRentalManagementDBModel.Apartment" Role="Apartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Apartment">
+              <PropertyRef Name="TenantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -505,18 +541,6 @@
             <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.C__RefactorLog">
               <MappingFragment StoreEntitySet="__RefactorLog">
                 <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Apartments">
-            <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Apartment">
-              <MappingFragment StoreEntitySet="Apartments">
-                <ScalarProperty Name="ApartmentId" ColumnName="ApartmentId" />
-                <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -582,6 +606,19 @@
               <MappingFragment StoreEntitySet="UserTypes">
                 <ScalarProperty Name="UserTypeId" ColumnName="UserTypeId" />
                 <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Apartments">
+            <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Apartment">
+              <MappingFragment StoreEntitySet="Apartments">
+                <ScalarProperty Name="TenantId" ColumnName="TenantId" />
+                <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
+                <ScalarProperty Name="ApartmentId" ColumnName="ApartmentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
