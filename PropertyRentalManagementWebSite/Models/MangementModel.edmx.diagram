@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f336583aeea747ec8b0d815dfd8aaa28" Name="Diagram1">
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.C__RefactorLog" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Apartment" Width="1.5" PointX="7.5" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Appointment" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Building" Width="1.5" PointX="5.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Message" Width="1.5" PointX="5.25" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.Status" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.User" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PropertyRentalManagementDBModel.UserType" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Appointme__Recei__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Appointme__Sende__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Buildings__UserI__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Messages__Receiv__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Messages__Sender__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Users__StatusId__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Users__UserTypeI__3B75D760" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

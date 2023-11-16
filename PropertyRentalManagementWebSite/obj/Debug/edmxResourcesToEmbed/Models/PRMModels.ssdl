@@ -66,6 +66,8 @@
     <Property Name="Password" Type="varbinary" MaxLength="256" Nullable="false" />
     <Property Name="StatusId" Type="int" Nullable="false" />
     <Property Name="UserTypeId" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="UserTypes">
     <Key>

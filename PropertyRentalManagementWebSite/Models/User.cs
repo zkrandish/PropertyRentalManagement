@@ -11,8 +11,7 @@ namespace PropertyRentalManagementWebSite.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -32,11 +31,9 @@ namespace PropertyRentalManagementWebSite.Models
         public byte[] Password { get; set; }
         public int StatusId { get; set; }
         public int UserTypeId { get; set; }
-        // Add this to your User model or create a separate ViewModel
-        [NotMapped]
-        public string PasswordString { get; set; }
-
-
+        public string UserName { get; set; }
+        public string Email { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Apartment> Apartments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -50,12 +50,20 @@ namespace PropertyRentalManagementWebSite.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserId,FirstName,LastName,PasswordString,StatusId,UserTypeId")] User user)
+        public ActionResult Create([Bind(Include = "UserId,FirstName,LastName,PasswordString,StatusId,UserTypeId,UserName,Email")] User user)
         {
+            if (db.Users.Any(u => u.UserName == user.UserName))
+            {
+                ModelState.AddModelError("Username", "Username is already taken.");
+            }
+
+            if (db.Users.Any(u => u.Email == user.Email))
+            {
+                ModelState.AddModelError("Email", "Email is already in use.");
+            }
             if (ModelState.IsValid)
             {
-                // Here you would hash the password string and convert it to a byte array.
-                // The following is a placeholder for the hash operation.
+               
                 var passwordHash = HashPassword(user.PasswordString);
                 user.Password = passwordHash;
                 db.Users.Add(user);
@@ -91,7 +99,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Password,StatusId,UserTypeId")] User user)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,Password,StatusId,UserTypeId,UserName,Email")] User user)
         {
             if (ModelState.IsValid)
             {

@@ -33,7 +33,5 @@ namespace PropertyRentalManagementWebSite.Models
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-
-        public System.Data.Entity.DbSet<PropertyRentalManagementWebSite.ViewModels.LoginViewModel> LoginViewModels { get; set; }
     }
 }

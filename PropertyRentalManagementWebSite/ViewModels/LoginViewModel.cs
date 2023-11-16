@@ -9,10 +9,10 @@ namespace PropertyRentalManagementWebSite.ViewModels
 {
     public class LoginViewModel
     {
-        
+
         [Required]
-        [Display(Name = "UserId")]
-        public int UserId { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

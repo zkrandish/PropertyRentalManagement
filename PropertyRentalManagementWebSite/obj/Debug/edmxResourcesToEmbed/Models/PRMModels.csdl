@@ -83,6 +83,8 @@
     <NavigationProperty Name="Messages1" Relationship="Self.FK__Messages__Sender__398D8EEE" FromRole="Users" ToRole="Messages" />
     <NavigationProperty Name="Status" Relationship="Self.FK__Users__StatusId__3A81B327" FromRole="Users" ToRole="Statuses" />
     <NavigationProperty Name="UserType" Relationship="Self.FK__Users__UserTypeI__3B75D760" FromRole="Users" ToRole="UserTypes" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="UserType">
     <Key>

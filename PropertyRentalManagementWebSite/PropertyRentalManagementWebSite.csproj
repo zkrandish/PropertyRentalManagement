@@ -148,6 +148,7 @@
     <Compile Include="Models\C__RefactorLog.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserPartial.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Models\Message.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
