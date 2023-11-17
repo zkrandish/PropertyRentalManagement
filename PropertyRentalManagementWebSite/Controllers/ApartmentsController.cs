@@ -17,11 +17,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments
         public ActionResult Index()
         {
-            if (Session["UserRole"] as string != "Manager")
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-            }
-            var apartments = db.Apartments.Include(a => a.Building).Include(a => a.User);
+            var apartments = db.Apartments.Include(a => a.Building).Include(a => a.User).Include(a => a.User1);
             return View(apartments.ToList());
         }
 
@@ -44,7 +40,8 @@ namespace PropertyRentalManagementWebSite.Controllers
         public ActionResult Create()
         {
             ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province");
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName");
+            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName");
+            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName");
             return View();
         }
 
@@ -53,7 +50,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ApartmentId,BuildingId,Type,StatusId,Price,UserId")] Apartment apartment)
+        public ActionResult Create([Bind(Include = "ApartmentId,BuildingId,Type,StatusId,Price,ManagerId,TenantId")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +60,8 @@ namespace PropertyRentalManagementWebSite.Controllers
             }
 
             ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province", apartment.BuildingId);
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName", apartment.UserId);
+            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName", apartment.ManagerId);
+            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName", apartment.TenantId);
             return View(apartment);
         }
 
@@ -80,7 +78,8 @@ namespace PropertyRentalManagementWebSite.Controllers
                 return HttpNotFound();
             }
             ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province", apartment.BuildingId);
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName", apartment.UserId);
+            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName", apartment.ManagerId);
+            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName", apartment.TenantId);
             return View(apartment);
         }
 
@@ -89,7 +88,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ApartmentId,BuildingId,Type,StatusId,Price,UserId")] Apartment apartment)
+        public ActionResult Edit([Bind(Include = "ApartmentId,BuildingId,Type,StatusId,Price,ManagerId,TenantId")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +97,8 @@ namespace PropertyRentalManagementWebSite.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province", apartment.BuildingId);
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName", apartment.UserId);
+            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName", apartment.ManagerId);
+            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName", apartment.TenantId);
             return View(apartment);
         }
 

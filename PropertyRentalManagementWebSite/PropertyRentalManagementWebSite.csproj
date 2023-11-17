@@ -130,6 +130,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ApartmentsController.cs" />
     <Compile Include="Controllers\BuildingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerDashboardController.cs" />
@@ -261,6 +262,11 @@
     <Content Include="Views\Buildings\Index.cshtml" />
     <Content Include="Views\ManagerDashboard\Index.cshtml" />
     <Content Include="Views\ManagerDashboard\UnauthorizedAccess.cshtml" />
+    <Content Include="Views\Apartments\Create.cshtml" />
+    <Content Include="Views\Apartments\Delete.cshtml" />
+    <Content Include="Views\Apartments\Details.cshtml" />
+    <Content Include="Views\Apartments\Edit.cshtml" />
+    <Content Include="Views\Apartments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

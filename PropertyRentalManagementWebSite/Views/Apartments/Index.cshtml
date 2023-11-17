@@ -26,6 +26,9 @@
         <th>
             @Html.DisplayNameFor(model => model.User.FirstName)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User1.FirstName)
+        </th>
         <th></th>
     </tr>
 
@@ -45,6 +48,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.User.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User1.FirstName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ApartmentId }) |
