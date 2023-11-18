@@ -24,10 +24,10 @@
             @Html.DisplayNameFor(model => model.Building.Province)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.FirstName)
+            @Html.DisplayNameFor(model => model.User.UserName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User1.FirstName)
+            @Html.DisplayNameFor(model => model.User1.UserName)
         </th>
         <th></th>
     </tr>
@@ -47,10 +47,10 @@
             @Html.DisplayFor(modelItem => item.Building.Province)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.FirstName)
+            @Html.DisplayFor(modelItem => item.User.UserName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User1.FirstName)
+            @Html.DisplayFor(modelItem => item.User1.UserName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ApartmentId }) |

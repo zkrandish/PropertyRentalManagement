@@ -39,9 +39,11 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments/Create
         public ActionResult Create()
         {
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province");
-            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName");
-            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName");
+            var managers= db.Users.Where(u=>u.UserType.UserRole=="Manager").ToList();
+            var Tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
+            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "PostalCode");
+            ViewBag.ManagerId = new SelectList(managers, "UserId", "UserName");
+            ViewBag.TenantId = new SelectList(Tenants, "UserId", "UserName");
             return View();
         }
 
@@ -58,10 +60,12 @@ namespace PropertyRentalManagementWebSite.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            var managers = db.Users.Where(u => u.UserType.UserRole == "Manager").ToList();
+            var Tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
 
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province", apartment.BuildingId);
-            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName", apartment.ManagerId);
-            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName", apartment.TenantId);
+            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "PostalCode", apartment.BuildingId);
+            ViewBag.ManagerId = new SelectList(managers, "UserId", "UserName", apartment.ManagerId);
+            ViewBag.TenantId = new SelectList(Tenants, "UserId", "UserName", apartment.TenantId);
             return View(apartment);
         }
 
@@ -77,9 +81,9 @@ namespace PropertyRentalManagementWebSite.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province", apartment.BuildingId);
-            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName", apartment.ManagerId);
-            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName", apartment.TenantId);
+            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "PostalCode", apartment.BuildingId);
+            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "UserName", apartment.ManagerId);
+            ViewBag.TenantId = new SelectList(db.Users, "UserId", "UserName", apartment.TenantId);
             return View(apartment);
         }
 
@@ -96,9 +100,9 @@ namespace PropertyRentalManagementWebSite.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "Province", apartment.BuildingId);
-            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "FirstName", apartment.ManagerId);
-            ViewBag.TenantId = new SelectList(db.Users, "UserId", "FirstName", apartment.TenantId);
+            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "PostalCode", apartment.BuildingId);
+            ViewBag.ManagerId = new SelectList(db.Users, "UserId", "UserName", apartment.ManagerId);
+            ViewBag.TenantId = new SelectList(db.Users, "UserId", "UserName", apartment.TenantId);
             return View(apartment);
         }
 

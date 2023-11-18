@@ -7,7 +7,7 @@
     [Price] DECIMAL(19, 4) NOT NULL,
     [ManagerId] INT NOT NULL,
     [TenantId] INT NULL, -- Assuming a tenant might not always be assigned
-    FOREIGN KEY (BuildingId) REFERENCES [Buildings](buildingId) ON DELETE CASCADE,
+    FOREIGN KEY (BuildingId) REFERENCES [Buildings](BuildingId) ON DELETE CASCADE,
     FOREIGN KEY (ManagerId) REFERENCES [Users](UserId),
     FOREIGN KEY (TenantId) REFERENCES [Users](UserId)
 )

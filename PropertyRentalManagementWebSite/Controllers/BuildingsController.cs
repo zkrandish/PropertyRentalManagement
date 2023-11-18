@@ -62,7 +62,7 @@ namespace PropertyRentalManagementWebSite.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName", building.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "UserName", building.UserId);
             return View(building);
         }
 
@@ -78,7 +78,7 @@ namespace PropertyRentalManagementWebSite.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName", building.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "UserName", building.UserId);
             return View(building);
         }
 
@@ -95,7 +95,7 @@ namespace PropertyRentalManagementWebSite.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName", building.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "UserName", building.UserId);
             return View(building);
         }
 

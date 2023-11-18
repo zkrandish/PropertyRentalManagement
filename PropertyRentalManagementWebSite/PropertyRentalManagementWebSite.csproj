@@ -141,6 +141,7 @@
     <Compile Include="Models\Apartment.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApartmentPartial.cs" />
     <Compile Include="Models\Appointment.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
