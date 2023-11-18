@@ -17,8 +17,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments
         public ActionResult Index(int? searchStatus)
         {
-            //var apartments = db.Apartments.Include(a => a.Building).Include(a => a.User).Include(a => a.User1);
-            //return View(apartments.ToList());
+           
             // Fetch the list of statuses for the dropdown
             ViewBag.Statuses = db.Statuses.Select(s => new SelectListItem
             {
