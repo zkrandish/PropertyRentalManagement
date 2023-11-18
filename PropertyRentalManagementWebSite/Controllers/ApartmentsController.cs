@@ -15,10 +15,30 @@ namespace PropertyRentalManagementWebSite.Controllers
         private PropertyRentalManagementDBEntities db = new PropertyRentalManagementDBEntities();
 
         // GET: Apartments
-        public ActionResult Index()
+        public ActionResult Index(int? searchStatus)
         {
-            var apartments = db.Apartments.Include(a => a.Building).Include(a => a.User).Include(a => a.User1);
-            return View(apartments.ToList());
+            //var apartments = db.Apartments.Include(a => a.Building).Include(a => a.User).Include(a => a.User1);
+            //return View(apartments.ToList());
+            // Fetch the list of statuses for the dropdown
+            ViewBag.Statuses = db.Statuses.Select(s => new SelectListItem
+            {
+                Value = s.StatusId.ToString(),
+                Text = s.Description
+            }).ToList();
+
+            // Start with a query that includes related data
+            IQueryable<Apartment> apartmentsQuery = db.Apartments.Include(a => a.Building).Include(a=>a.Status).Include(a => a.User).Include(a => a.User1);
+
+            // If a status filter is set, adjust the query to filter by status
+            if (searchStatus.HasValue)
+            {
+                apartmentsQuery = apartmentsQuery.Where(a => a.StatusId == searchStatus.Value);
+            }
+
+            // Execute the query and convert to a list
+            var apartmentsList = apartmentsQuery.ToList();
+
+            return View(apartmentsList);
         }
 
         // GET: Apartments/Details/5

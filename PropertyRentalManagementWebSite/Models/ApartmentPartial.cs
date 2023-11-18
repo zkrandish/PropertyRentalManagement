@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
-
-namespace PropertyRentalManagementWebSite.Models
+﻿namespace PropertyRentalManagementWebSite.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class Apartment
     {
         // These properties will use the foreign key properties but give you a clearer name in your code.
@@ -14,5 +12,7 @@ namespace PropertyRentalManagementWebSite.Models
 
         [ForeignKey("TenantId")]
         public User Tenant { get; set; }
+        // It uses the StatusId foreign key to reference the Status entity.
+        public virtual Status Status { get; set; }
     }
 }

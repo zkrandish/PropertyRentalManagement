@@ -6,6 +6,19 @@
 
 <h2>Index</h2>
 
+
+@using (Html.BeginForm("Index", "Apartments", FormMethod.Get))
+{
+    <p>
+        Status: @Html.DropDownList("searchStatus",
+           (IEnumerable<SelectListItem>)ViewBag.Statuses,
+           "Select a status",
+           new { @class = "form-control" })
+        <input type="submit" value="Search" class="btn btn-default" />
+    </p>
+}
+
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -15,7 +28,7 @@
             @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StatusId)
+            @Html.DisplayNameFor(model => model.Status.Description)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
@@ -32,32 +45,33 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StatusId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Building.Province)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User1.UserName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ApartmentId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ApartmentId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ApartmentId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Building.Province)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User1.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ApartmentId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ApartmentId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ApartmentId })
+            </td>
+        </tr>
+    }
 
 </table>

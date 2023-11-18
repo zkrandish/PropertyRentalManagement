@@ -4,7 +4,3 @@ C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\bin\Debu
 C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\PropertyRentalManagementDB.sqlproj.AssemblyReference.cache
 C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\PropertyRentalManagementDB.dll
 C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\PropertyRentalManagementDB.pdb
-C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\Model.xml
-C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\refactor.xml
-C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\postdeploy.sql
-C:\A2023_DW4_7262\PropertyRentalManagementDB\PropertyRentalManagementDB\obj\Debug\predeploy.sql
