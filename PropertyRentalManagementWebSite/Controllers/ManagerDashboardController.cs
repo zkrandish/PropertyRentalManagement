@@ -27,5 +27,9 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             return RedirectToAction("Index", "Apartments");
         }
+        public ActionResult ManageAppointments()
+        {
+            return RedirectToAction("Index", "Appointments");
+        }
     }
 }

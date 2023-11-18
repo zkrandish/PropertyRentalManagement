@@ -131,6 +131,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApartmentsController.cs" />
+    <Compile Include="Controllers\AppointmentsController.cs" />
     <Compile Include="Controllers\BuildingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerDashboardController.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Models\Appointment.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppointmentPartial.cs" />
     <Compile Include="Models\Building.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
@@ -154,6 +156,7 @@
     <Compile Include="Models\Message.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Metadata.cs" />
     <Compile Include="Models\Status.cs">
       <DependentUpon>PRMModels.tt</DependentUpon>
     </Compile>
@@ -268,6 +271,11 @@
     <Content Include="Views\Apartments\Details.cshtml" />
     <Content Include="Views\Apartments\Edit.cshtml" />
     <Content Include="Views\Apartments\Index.cshtml" />
+    <Content Include="Views\Appointments\Create.cshtml" />
+    <Content Include="Views\Appointments\Delete.cshtml" />
+    <Content Include="Views\Appointments\Details.cshtml" />
+    <Content Include="Views\Appointments\Edit.cshtml" />
+    <Content Include="Views\Appointments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

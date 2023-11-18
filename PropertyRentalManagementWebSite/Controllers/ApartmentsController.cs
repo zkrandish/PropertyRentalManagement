@@ -17,7 +17,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments
         public ActionResult Index(int? searchStatus)
         {
-           
+            if (Session["UserRole"] as string != "Manager")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             // Fetch the list of statuses for the dropdown
             ViewBag.Statuses = db.Statuses.Select(s => new SelectListItem
             {
