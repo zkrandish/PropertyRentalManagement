@@ -23,6 +23,7 @@
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4" />
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED" />
         <AssociationConnector Association="PropertyRentalManagementDBModel.FK_Apartments_Tenants" />
+        <AssociationConnector Association="PropertyRentalManagementDBModel.FK_Apartments_Statuses" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

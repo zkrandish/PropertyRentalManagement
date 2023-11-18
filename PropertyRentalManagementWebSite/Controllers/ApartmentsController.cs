@@ -61,9 +61,11 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             var managers= db.Users.Where(u=>u.UserType.UserRole=="Manager").ToList();
             var Tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
+            var statuses = db.Statuses.ToList(); // Fetch all statuses
             ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "PostalCode");
             ViewBag.ManagerId = new SelectList(managers, "UserId", "UserName");
             ViewBag.TenantId = new SelectList(Tenants, "UserId", "UserName");
+            ViewBag.StatusId = new SelectList(statuses, "StatusId", "Description"); 
             return View();
         }
 

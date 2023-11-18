@@ -51,6 +51,7 @@
     <Property Name="StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Users" Relationship="Self.FK__Users__StatusId__3A81B327" FromRole="Statuses" ToRole="Users" />
+    <NavigationProperty Name="Apartments" Relationship="PropertyRentalManagementDBModel.FK_Apartments_Statuses" FromRole="Status" ToRole="Apartment" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -215,6 +216,10 @@
       <End Role="User" EntitySet="Users" />
       <End Role="Apartment" EntitySet="Apartments" />
     </AssociationSet>
+    <AssociationSet Name="FK_Apartments_Statuses" Association="PropertyRentalManagementDBModel.FK_Apartments_Statuses">
+      <End Role="Status" EntitySet="Statuses" />
+      <End Role="Apartment" EntitySet="Apartments" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Apartment">
     <Key>
@@ -230,6 +235,7 @@
     <NavigationProperty Name="Building" Relationship="PropertyRentalManagementDBModel.FK__Apartment__Build__300424B4" FromRole="Apartment" ToRole="Building" />
     <NavigationProperty Name="User" Relationship="PropertyRentalManagementDBModel.FK__Apartment__UserI__30F848ED" FromRole="Apartment" ToRole="User" />
     <NavigationProperty Name="User1" Relationship="PropertyRentalManagementDBModel.FK_Apartments_Tenants" FromRole="Apartment" ToRole="User" />
+    <NavigationProperty Name="Status" Relationship="PropertyRentalManagementDBModel.FK_Apartments_Statuses" FromRole="Apartment" ToRole="Status" />
   </EntityType>
   <Association Name="FK__Apartment__Build__300424B4">
     <End Type="PropertyRentalManagementDBModel.Building" Role="Building" Multiplicity="1">
@@ -268,6 +274,18 @@
       </Principal>
       <Dependent Role="Apartment">
         <PropertyRef Name="TenantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Apartments_Statuses">
+    <End Type="PropertyRentalManagementDBModel.Status" Role="Status" Multiplicity="1" />
+    <End Type="PropertyRentalManagementDBModel.Apartment" Role="Apartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="Apartment">
+        <PropertyRef Name="StatusId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

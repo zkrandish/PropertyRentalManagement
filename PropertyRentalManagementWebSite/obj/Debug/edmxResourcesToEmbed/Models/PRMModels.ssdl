@@ -189,6 +189,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Apartments_Statuses">
+    <End Role="Statuses" Type="Self.Statuses" Multiplicity="1" />
+    <End Role="Apartments" Type="Self.Apartments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Statuses">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="Apartments">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Apartments_Tenants">
     <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
     <End Role="Apartments" Type="Self.Apartments" Multiplicity="*" />
@@ -245,6 +257,10 @@
     <AssociationSet Name="FK__Users__UserTypeI__3B75D760" Association="Self.FK__Users__UserTypeI__3B75D760">
       <End Role="UserTypes" EntitySet="UserTypes" />
       <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Apartments_Statuses" Association="Self.FK_Apartments_Statuses">
+      <End Role="Statuses" EntitySet="Statuses" />
+      <End Role="Apartments" EntitySet="Apartments" />
     </AssociationSet>
     <AssociationSet Name="FK_Apartments_Tenants" Association="Self.FK_Apartments_Tenants">
       <End Role="Users" EntitySet="Users" />

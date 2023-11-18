@@ -12,7 +12,6 @@
 
         [ForeignKey("TenantId")]
         public User Tenant { get; set; }
-        // It uses the StatusId foreign key to reference the Status entity.
-        public virtual Status Status { get; set; }
+        
     }
 }

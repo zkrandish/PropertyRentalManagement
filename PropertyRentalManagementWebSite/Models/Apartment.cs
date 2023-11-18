@@ -25,5 +25,6 @@ namespace PropertyRentalManagementWebSite.Models
         public virtual Building Building { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual Status Status { get; set; }
     }
 }
