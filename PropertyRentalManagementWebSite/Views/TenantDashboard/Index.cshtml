@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Tenant Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tenant Dashboard</h2>
+
+<div class="list-group">
+    
+    @Html.ActionLink("List of Apartments", "Index", "Apartments", null, new { @class = "list-group-item list-group-item-action" })
+    @Html.ActionLink("Manage Appointments", "Index", "Appointments", null, new { @class = "list-group-item list-group-item-action" })
+</div>

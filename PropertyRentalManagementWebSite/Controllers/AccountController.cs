@@ -41,7 +41,11 @@ namespace PropertyRentalManagementWebSite.Controllers
                 {
                     return RedirectToAction("Index", "ManagerDashboard");
                 }
-                
+                if (userRole == "Tenant")
+                {
+                    return RedirectToAction("Index", "TenantDashboard");
+                }
+
                 return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError("", "UserName or password is wrong");

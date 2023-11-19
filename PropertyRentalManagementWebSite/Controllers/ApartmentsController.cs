@@ -15,11 +15,18 @@ namespace PropertyRentalManagementWebSite.Controllers
         private PropertyRentalManagementDBEntities db = new PropertyRentalManagementDBEntities();
 
         // GET: Apartments
-        public ActionResult Index(int? searchStatus)
+        public ActionResult Index(int? searchStatus, string searchProvince, string searchCity)
         {
-            if (Session["UserRole"] as string != "Manager")
+            var userRole = Session["UserRole"] as string;
+            
+            
+
+            // Start with a query that includes related data
+            IQueryable<Apartment> apartmentsQuery = db.Apartments.Include(a => a.Building).Include(a => a.Status).Include(a => a.User).Include(a => a.User1);
+            if (userRole != "Manager")
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                // If the user is not a manager, restrict the list to certain criteria, e.g., available apartments
+                apartmentsQuery = apartmentsQuery.Where(a => a.Status.Description == "Available");
             }
             // Fetch the list of statuses for the dropdown
             ViewBag.Statuses = db.Statuses.Select(s => new SelectListItem
@@ -28,17 +35,33 @@ namespace PropertyRentalManagementWebSite.Controllers
                 Text = s.Description
             }).ToList();
 
-            // Start with a query that includes related data
-            IQueryable<Apartment> apartmentsQuery = db.Apartments.Include(a => a.Building).Include(a=>a.Status).Include(a => a.User).Include(a => a.User1);
 
             // If a status filter is set, adjust the query to filter by status
             if (searchStatus.HasValue)
             {
                 apartmentsQuery = apartmentsQuery.Where(a => a.StatusId == searchStatus.Value);
             }
+            ViewBag.ProvinceList = new SelectList(db.Buildings.Select(b => b.Province).Distinct().ToList());
+            ViewBag.CityList = new SelectList(db.Buildings.Select(b => b.City).Distinct().ToList());
+            ViewBag.TypeList = new SelectList(db.Apartments.Select(b => b.Type).Distinct().ToList());
+         
+            // Filter by province if searchProvince is not null or empty
+            if (!String.IsNullOrEmpty(searchProvince))
+            {
+                apartmentsQuery = apartmentsQuery.Where(a => a.Building.Province == searchProvince);
+            }
+
+            // Filter by city if searchCity is not null or empty
+            if (!String.IsNullOrEmpty(searchCity))
+            {
+                apartmentsQuery = apartmentsQuery.Where(a => a.Building.City == searchCity);
+            }
 
             // Execute the query and convert to a list
             var apartmentsList = apartmentsQuery.ToList();
+            // Pass the search criteria back to the view to maintain the state of the search form
+            ViewBag.SearchProvince = searchProvince;
+            ViewBag.SearchCity = searchCity;
 
             return View(apartmentsList);
         }
@@ -61,7 +84,11 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments/Create
         public ActionResult Create()
         {
-            var managers= db.Users.Where(u=>u.UserType.UserRole=="Manager").ToList();
+            if (Session["UserRole"] as string != "Manager")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+            var managers = db.Users.Where(u=>u.UserType.UserRole=="Manager").ToList();
             var Tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
             var statuses = db.Statuses.ToList(); // Fetch all statuses
             ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "PostalCode");
@@ -78,6 +105,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ApartmentId,BuildingId,Type,StatusId,Price,ManagerId,TenantId")] Apartment apartment)
         {
+            if (Session["UserRole"] as string != "Manager")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             if (ModelState.IsValid)
             {
                 db.Apartments.Add(apartment);
@@ -96,6 +127,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UserRole"] as string != "Manager")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -118,6 +153,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ApartmentId,BuildingId,Type,StatusId,Price,ManagerId,TenantId")] Apartment apartment)
         {
+            if (Session["UserRole"] as string != "Manager")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(apartment).State = EntityState.Modified;
@@ -133,6 +172,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UserRole"] as string != "Manager")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -150,6 +193,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (Session["UserRole"] as string != "Manager")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             Apartment apartment = db.Apartments.Find(id);
             db.Apartments.Remove(apartment);
             db.SaveChanges();
