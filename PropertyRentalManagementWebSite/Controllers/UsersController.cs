@@ -69,6 +69,7 @@ namespace PropertyRentalManagementWebSite.Controllers
                 db.Users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+               
             }
             ModelState.Remove("Password");
 

@@ -53,6 +53,46 @@ namespace PropertyRentalManagementWebSite.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
+        public ActionResult SignUp()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SignUp(SignUpViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check if username/email already exists
+                if (db.Users.Any(u => u.UserName == model.Username) || db.Users.Any(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("", "Username or Email already exists.");
+                    return View(model);
+                }
+
+                var user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Password = HashPassword(model.Password), 
+                    StatusId= db.Statuses.FirstOrDefault(us=>us.Description=="Active").StatusId,
+                    UserTypeId = db.UserTypes.FirstOrDefault(ut => ut.UserRole == "Tenant").UserTypeId,
+                    UserName = model.Username,
+                    Email = model.Email,
+                };
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                // Log the user in or redirect to a confirmation page
+                //FormsAuthentication.SetAuthCookie(model.Username, false);
+                return RedirectToAction("Login", "Account");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
         private byte[] HashPassword(string password)
         {
             // Use a proper hashing algorithm with a salt
