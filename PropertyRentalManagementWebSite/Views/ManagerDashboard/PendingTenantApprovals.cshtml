@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<PropertyRentalManagementWebSite.Models.User>
+
+@{
+    ViewBag.Title = "PendingTenantApprovals";
+}
+
+<h2>Pending Tenant Approvals</h2>
+<p>Review and approve pending tenant accounts.</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tenant in Model)
+        {
+            using (Html.BeginForm("ApproveTenant", "ManagerDashboard", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("id", tenant.UserId)
+                <tr>
+                    <td>@tenant.FirstName</td>
+                    <td>@tenant.LastName</td>
+                    <td>@tenant.UserName</td>
+                    <td>@tenant.Email</td>
+                    <td>
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+
+

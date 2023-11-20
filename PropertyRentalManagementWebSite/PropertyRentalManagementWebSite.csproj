@@ -281,6 +281,7 @@
     <Content Include="Views\Account\SignUp.cshtml" />
     <Content Include="Views\TenantDashboard\Index.cshtml" />
     <Content Include="Views\TenantDashboard\UnauthorizedAccess.cshtml" />
+    <Content Include="Views\ManagerDashboard\PendingTenantApprovals.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

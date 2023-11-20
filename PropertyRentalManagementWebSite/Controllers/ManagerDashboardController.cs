@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyRentalManagementWebSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,6 +10,7 @@ namespace PropertyRentalManagementWebSite.Controllers
     
     public class ManagerDashboardController : Controller
     {
+        private PropertyRentalManagementDBEntities db = new PropertyRentalManagementDBEntities(); // Assuming you have a DbContext
         // GET: ManagerDashboard
         public ActionResult Index()
         {
@@ -30,6 +32,35 @@ namespace PropertyRentalManagementWebSite.Controllers
         public ActionResult ManageAppointments()
         {
             return RedirectToAction("Index", "Appointments");
+        }
+      
+        public ActionResult PendingTenantApprovals()
+        {
+            if (Session["UserRole"] as string != "Manager")
+            {
+                
+                return RedirectToAction("UnauthorizedAccess");
+            }
+            var pendingUsers = db.Users.Where(u => u.Status.Description == "Pending").ToList();
+            return View(pendingUsers); // Pass the list to the view
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken] 
+        public ActionResult ApproveTenant(int id)
+        {
+            var userToApprove = db.Users.Find(id);
+            if (userToApprove != null && userToApprove.Status.Description == "Pending")
+            {
+                var activeStatus = db.Statuses.FirstOrDefault(s => s.Description == "Active");
+                if (activeStatus != null)
+                {
+                    userToApprove.StatusId = activeStatus.StatusId;
+                    db.Entry(userToApprove).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    
+                }
+            }
+            return RedirectToAction("PendingTenantApprovals"); // Redirect back to the list
         }
     }
 }

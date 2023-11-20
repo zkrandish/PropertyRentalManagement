@@ -34,6 +34,14 @@ namespace PropertyRentalManagementWebSite.Controllers
             User user = db.Users.FirstOrDefault(x => x.UserName == model.Username && x.Password == hashedPassword);
             if (userExist)
             {
+                // Check if the user's status is 'Pending'
+                var pendingStatus = db.Statuses.FirstOrDefault(s => s.Description.Equals("Pending", StringComparison.OrdinalIgnoreCase));
+                if (user.StatusId == pendingStatus.StatusId)
+                {
+                 
+                    ModelState.AddModelError("", "Your account is pending approval. Please wait until a manager activates your account.");
+                    return View(model);
+                }
                 var userRole = user.UserType.UserRole;
                 FormsAuthentication.SetAuthCookie(user.UserName, false);
                 Session["UserRole"] = userRole;
@@ -73,13 +81,14 @@ namespace PropertyRentalManagementWebSite.Controllers
                     ModelState.AddModelError("", "Username or Email already exists.");
                     return View(model);
                 }
+                var pendingStatus = db.Statuses.FirstOrDefault(s => s.Description.Equals("Pending", StringComparison.OrdinalIgnoreCase));
 
                 var user = new User
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Password = HashPassword(model.Password), 
-                    StatusId= db.Statuses.FirstOrDefault(us=>us.Description=="Active").StatusId,
+                    StatusId= pendingStatus.StatusId,
                     UserTypeId = db.UserTypes.FirstOrDefault(ut => ut.UserRole == "Tenant").UserTypeId,
                     UserName = model.Username,
                     Email = model.Email,
