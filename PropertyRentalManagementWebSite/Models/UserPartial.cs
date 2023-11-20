@@ -9,6 +9,7 @@ namespace PropertyRentalManagementWebSite.Models
 {
     public partial class User
     {
+
         [NotMapped]
         [DataType(DataType.Password)]
         public string PasswordString { get; set; }
