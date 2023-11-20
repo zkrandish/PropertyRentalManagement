@@ -1,9 +1,42 @@
-﻿@{
+﻿@*@{
+        ViewBag.Title = "Manager Dashboard";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+    }
+    @{
+        int pendingApprovalsCount = ViewBag.PendingApprovalsCount;
+    }
+
+    <h2>Manager Dashboard</h2>
+
+    <div class="list-group">
+        @Html.ActionLink("Manage Buildings", "Index", "Buildings", null, new { @class = "list-group-item list-group-item-action" })
+        @Html.ActionLink("Manage Apartments", "Index", "Apartments", null, new { @class = "list-group-item list-group-item-action" })
+        @Html.ActionLink("Manage Appointments", "Index", "Appointments", null, new { @class = "list-group-item list-group-item-action" })
+        @Html.ActionLink("Pending Tenant Approvals", "PendingTenantApprovals", "ManagerDashboard", null, new { @class = "list-group-item list-group-item-action" })
+        @if (ViewBag.PendingApprovalsCount > 0)
+        {
+            <span class="badge">@ViewBag.PendingApprovalsCount</span>
+        }
+
+    </div>*@
+
+
+@{
     ViewBag.Title = "Manager Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Manager Dashboard</h2>
+
+@if (ViewBag.PendingApprovalsCount > 0)
+{
+    <div class="alert alert-warning" role="alert">
+        You have @ViewBag.PendingApprovalsCount tenant(s) pending approval.
+    </div>
+}
+
+
 
 <div class="list-group">
     @Html.ActionLink("Manage Buildings", "Index", "Buildings", null, new { @class = "list-group-item list-group-item-action" })
@@ -11,5 +44,3 @@
     @Html.ActionLink("Manage Appointments", "Index", "Appointments", null, new { @class = "list-group-item list-group-item-action" })
     @Html.ActionLink("Pending Tenant Approvals", "PendingTenantApprovals", "ManagerDashboard", null, new { @class = "list-group-item list-group-item-action" })
 </div>
-
-

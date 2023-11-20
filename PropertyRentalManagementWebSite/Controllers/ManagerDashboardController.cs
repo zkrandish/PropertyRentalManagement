@@ -16,6 +16,8 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             if (Session["UserRole"] as string == "Manager")
             {
+                int pendingApprovalsCount = db.Users.Count(u => u.Status.Description == "Pending");
+                ViewBag.PendingApprovalsCount = pendingApprovalsCount;
                 return View();
 
             }
