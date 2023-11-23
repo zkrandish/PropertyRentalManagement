@@ -16,6 +16,21 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             if (Session["UserRole"] as string == "Manager")
             {
+                var currentUsername = User.Identity.Name;
+                var currentUser = db.Users.FirstOrDefault(u => u.UserName == currentUsername);
+
+                if (currentUser == null)
+                {
+
+                    return RedirectToAction("Error");
+                }
+                //to check the appointments
+                var userId = currentUser.UserId;
+                var upcomingAppointments = db.Appointments
+                    .Where(a => a.Receiver == userId && a.AppointmentDate >= DateTime.Now)
+                    .OrderBy(a => a.AppointmentDate)
+                    .ToList();
+                ViewBag.UpcomingAppointments = upcomingAppointments;
                 int pendingApprovalsCount = db.Users.Count(u => u.Status.Description == "Pending");
                 ViewBag.PendingApprovalsCount = pendingApprovalsCount;
                 return View();

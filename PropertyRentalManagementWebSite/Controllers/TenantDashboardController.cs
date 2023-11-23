@@ -21,12 +21,10 @@ namespace PropertyRentalManagementWebSite.Controllers
 
                 if (currentUser == null)
                 {
-                    // Handle the case where the user is not found
-                  // redirecting to an error page or logging out
-                  //???error page
+
                     return RedirectToAction("Error"); 
                 }
-
+                //to check the appointments
                 var userId = currentUser.UserId;
                 var upcomingAppointments = db.Appointments
                     .Where(a => a.Receiver == userId && a.AppointmentDate >= DateTime.Now)

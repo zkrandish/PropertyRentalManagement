@@ -17,12 +17,36 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Appointments
         public ActionResult Index()
         {
-            if (Session["UserRole"] as string != "Manager")
+           
+            string userRole = Session["UserRole"] as string;
+
+            if (userRole != "Manager" && userRole != "Tenant")
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
-            var appointments = db.Appointments.Include(a => a.User).Include(a => a.User1);
-            return View(appointments.ToList());
+
+            IQueryable<Appointment> appointmentsQuery = db.Appointments.Where(a => false); ;
+
+            if (userRole == "Manager")
+            {
+                // If the user is a manager, they can see all appointments or specific ones based on their needs
+                appointmentsQuery = db.Appointments.Include(a => a.User).Include(a => a.User1);
+                // Additional logic for managers, if any
+            }
+            else if (userRole == "Tenant")
+            {
+                var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                // If the user is a tenant, they only see appointments related to them
+                var currentUserId = currentUser.UserId;
+                appointmentsQuery = db.Appointments.Where(a => a.Receiver == currentUserId || a.Sender == currentUserId)
+                                                   .Include(a => a.User).Include(a => a.User1);
+                // Additional logic for tenants, if any
+            }
+
+            var appointmentsList = appointmentsQuery.ToList();
+
+            return View(appointmentsList);
+            
         }
 
         // GET: Appointments/Details/5
@@ -44,9 +68,9 @@ namespace PropertyRentalManagementWebSite.Controllers
         public ActionResult Create()
         {
             // Find the UserId based on the UserName in the database
-            var user = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
-            if (user == null)
+            if (currentUser == null)
             {
                 // Handle the case where the user is not found - perhaps redirect to an error page or log out
                 return RedirectToAction("Error"); 
@@ -55,11 +79,18 @@ namespace PropertyRentalManagementWebSite.Controllers
             var appointment = new Appointment
             {
                 // If user is found, it is safe to use the Value property because user.UserId will not be null
-                Sender = user.UserId
+                Sender = currentUser.UserId
             };
-            var tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
-
-            ViewBag.Receiver = new SelectList(tenants, "UserId", "UserName");
+            if (currentUser.UserType.UserRole == "Manager")
+            {
+                var tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
+                ViewBag.Receiver = new SelectList(tenants, "UserId", "UserName");
+            }
+            else if (currentUser.UserType.UserRole == "Tenant")
+            {
+                var managers = db.Users.Where(u => u.UserType.UserRole == "Manager").ToList();
+                ViewBag.Receiver = new SelectList(managers, "UserId", "UserName");
+            }
 
 
             // Pass the appointment object to the view, which has the Sender set

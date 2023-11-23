@@ -14,6 +14,16 @@
         You have @ViewBag.PendingApprovalsCount tenant(s) pending approval.
     </div>
 }
+<div class="upcoming-appointments">
+    <h3>Upcoming Appointments</h3>
+    @foreach (var appointment in ViewBag.UpcomingAppointments)
+    {
+        <div class="alert alert-warning" role="alert">
+            <p>You have an appointment scheduled on @appointment.AppointmentDate.ToString("g")</p>
+            <!-- Add more details or a link to view the appointment -->
+        </div>
+    }
+</div>
 
 
 
