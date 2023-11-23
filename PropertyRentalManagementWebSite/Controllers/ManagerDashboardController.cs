@@ -10,7 +10,7 @@ namespace PropertyRentalManagementWebSite.Controllers
     
     public class ManagerDashboardController : Controller
     {
-        private PropertyRentalManagementDBEntities db = new PropertyRentalManagementDBEntities(); // Assuming you have a DbContext
+        private PropertyRentalManagementDBEntities db = new PropertyRentalManagementDBEntities(); 
         // GET: ManagerDashboard
         public ActionResult Index()
         {

@@ -49,7 +49,7 @@ namespace PropertyRentalManagementWebSite.Controllers
             if (user == null)
             {
                 // Handle the case where the user is not found - perhaps redirect to an error page or log out
-                return RedirectToAction("Error"); // Replace with actual error handling
+                return RedirectToAction("Error"); 
             }
 
             var appointment = new Appointment
@@ -57,9 +57,10 @@ namespace PropertyRentalManagementWebSite.Controllers
                 // If user is found, it is safe to use the Value property because user.UserId will not be null
                 Sender = user.UserId
             };
+            var tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
 
-            // Only provide a list of potential Receivers for the dropdown
-            ViewBag.Receiver = new SelectList(db.Users, "UserId", "UserName");
+            ViewBag.Receiver = new SelectList(tenants, "UserId", "UserName");
+
 
             // Pass the appointment object to the view, which has the Sender set
             return View(appointment);

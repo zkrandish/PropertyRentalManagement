@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyRentalManagementWebSite.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,15 +7,33 @@ using System.Web.Mvc;
 
 namespace PropertyRentalManagementWebSite.Controllers
 {
+   
     public class TenantDashboardController : Controller
     {
+        private PropertyRentalManagementDBEntities db = new PropertyRentalManagementDBEntities();
         // GET: TenantDashboard
         public ActionResult Index()
         {
             if (Session["UserRole"] as string == "Tenant")
             {
-                return View();
+                var currentUsername = User.Identity.Name;
+                var currentUser = db.Users.FirstOrDefault(u => u.UserName == currentUsername);
 
+                if (currentUser == null)
+                {
+                    // Handle the case where the user is not found
+                  // redirecting to an error page or logging out
+                  //???error page
+                    return RedirectToAction("Error"); 
+                }
+
+                var userId = currentUser.UserId;
+                var upcomingAppointments = db.Appointments
+                    .Where(a => a.Receiver == userId && a.AppointmentDate >= DateTime.Now)
+                    .OrderBy(a => a.AppointmentDate)
+                    .ToList();
+                ViewBag.UpcomingAppointments = upcomingAppointments;
+                return View();
             }
             return View("UnauthorizedAccess");
         }

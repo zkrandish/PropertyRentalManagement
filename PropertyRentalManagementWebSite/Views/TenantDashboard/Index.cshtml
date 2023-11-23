@@ -2,11 +2,29 @@
     ViewBag.Title = "Tenant Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (ViewBag.UpcomingAppointments != null && ViewBag.UpcomingAppointments.Count > 0)
+{
+    <div class="upcoming-appointments">
+        <h3>Upcoming Appointments</h3>
+        @foreach (var appointment in ViewBag.UpcomingAppointments)
+        {
+           <div class="alert alert-warning" role="alert">
+               <p>You have an appointment scheduled on @appointment.AppointmentDate.ToString("g")</p>
+               <!-- Add more details or a link to view the appointment -->
+           </div>
+        }
+    </div>
+}
+else
+{
+    <p>No upcoming appointments.</p>
+}
+
 
 <h2>Tenant Dashboard</h2>
 
 <div class="list-group">
-    
+
     @Html.ActionLink("List of Apartments", "Index", "Apartments", null, new { @class = "list-group-item list-group-item-action" })
     @Html.ActionLink("Manage Appointments", "Index", "Appointments", null, new { @class = "list-group-item list-group-item-action" })
 </div>
