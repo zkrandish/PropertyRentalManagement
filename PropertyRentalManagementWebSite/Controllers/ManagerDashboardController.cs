@@ -1,6 +1,7 @@
 ﻿using PropertyRentalManagementWebSite.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,11 +27,12 @@ namespace PropertyRentalManagementWebSite.Controllers
                 }
                 //to check the appointments
                 var userId = currentUser.UserId;
-                var upcomingAppointments = db.Appointments
-                    .Where(a => a.Receiver == userId && a.AppointmentDate >= DateTime.Now)
+                var unreadAppointments = db.Appointments
+                    .Where(a => a.Receiver == userId && a.AppointmentDate >= DateTime.Now&& a.Status.Description=="UnRead")
                     .OrderBy(a => a.AppointmentDate)
                     .ToList();
-                ViewBag.UpcomingAppointments = upcomingAppointments;
+                ViewBag.UpcomingAppointments = unreadAppointments;
+
                 int pendingApprovalsCount = db.Users.Count(u => u.Status.Description == "Pending");
                 ViewBag.PendingApprovalsCount = pendingApprovalsCount;
                 return View();
@@ -79,5 +81,6 @@ namespace PropertyRentalManagementWebSite.Controllers
             }
             return RedirectToAction("PendingTenantApprovals"); // Redirect back to the list
         }
+        
     }
 }

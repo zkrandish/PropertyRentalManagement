@@ -29,6 +29,7 @@
     <Property Name="from" Type="time" Precision="7" Nullable="false" />
     <Property Name="to" Type="time" Precision="7" Nullable="false" />
     <Property Name="Purpose" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Buildings">
     <Key>
@@ -213,6 +214,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Appointments_Statuses">
+    <End Role="Statuses" Type="Self.Statuses" Multiplicity="1" />
+    <End Role="Appointments" Type="Self.Appointments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Statuses">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="Appointments">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="PropertyRentalManagementDBModelStoreContainer">
     <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Apartments" EntityType="Self.Apartments" Schema="dbo" store:Type="Tables" />
@@ -265,6 +278,10 @@
     <AssociationSet Name="FK_Apartments_Tenants" Association="Self.FK_Apartments_Tenants">
       <End Role="Users" EntitySet="Users" />
       <End Role="Apartments" EntitySet="Apartments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Appointments_Statuses" Association="Self.FK_Appointments_Statuses">
+      <End Role="Statuses" EntitySet="Statuses" />
+      <End Role="Appointments" EntitySet="Appointments" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

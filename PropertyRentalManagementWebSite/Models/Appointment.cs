@@ -21,8 +21,10 @@ namespace PropertyRentalManagementWebSite.Models
         public System.TimeSpan from { get; set; }
         public System.TimeSpan to { get; set; }
         public string Purpose { get; set; }
+        public int StatusId { get; set; }
     
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual Status Status { get; set; }
     }
 }

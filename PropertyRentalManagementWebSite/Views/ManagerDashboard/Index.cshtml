@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<PropertyRentalManagementWebSite.Models.Appointment>
 
 
 @{
@@ -16,12 +16,25 @@
 }
 <div class="upcoming-appointments">
     <h3>Upcoming Appointments</h3>
-    @foreach (var appointment in ViewBag.UpcomingAppointments)
+
+    @{
+        var upcomingAppointments = ViewBag.upcomingAppointments as IEnumerable<PropertyRentalManagementWebSite.Models.Appointment>;
+    }
+
+    @if (upcomingAppointments != null && upcomingAppointments.Any())
     {
-        <div class="alert alert-warning" role="alert">
-            <p>You have an appointment scheduled on @appointment.AppointmentDate.ToString("g")</p>
-            <!-- Add more details or a link to view the appointment -->
+        <div class="alert alert-info">
+            <strong>You have upcoming appointments:</strong>
+            @foreach (var appointment in upcomingAppointments)
+            {
+                <p>Appointment on @appointment.AppointmentDate.ToString("g"): @appointment.Purpose</p>
+                <!-- Additional details or actions for the appointment -->
+            }
         </div>
+    }
+    else
+    {
+        <p> You already see all the appointments schedule</p>
     }
 </div>
 

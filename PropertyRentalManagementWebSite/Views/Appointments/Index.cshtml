@@ -2,9 +2,16 @@
 
 @{
     ViewBag.Title = "Index";
+   
 }
 
 <h2>Index</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -32,34 +39,45 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AppointmentDate)
-        </td>
-        <td>
-            @item.from.ToString(@"hh\:mm")
-        </td>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppointmentDate)
+            </td>
+            <td>
+                @item.from.ToString(@"hh\:mm")
+            </td>
 
-        <td>
-            @item.to.ToString(@"hh\:mm") 
-        </td>
+            <td>
+                @item.to.ToString(@"hh\:mm")
+            </td>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.Purpose)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User1.UserName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.AppointmentId }) |
-            @Html.ActionLink("Details", "Details", new { id = item.AppointmentId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.AppointmentId })
-        </td>
-    </tr>
-}
+            <td>
+                @Html.DisplayFor(modelItem => item.Purpose)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User1.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.AppointmentId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.AppointmentId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.AppointmentId })
+                @if (item.Receiver == ViewBag.CurrentUserId) 
+                {
+                    using (Html.BeginForm("MarkAsRead", "Appointments", FormMethod.Post, new { @class = "inline-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("appointmentId", item.AppointmentId)
+                        <input type="submit" value="Mark as Read" class="btn btn-primary" />
+                    }
+                }
+
+            </td>
+        </tr>
+    }
 
 </table>

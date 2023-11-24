@@ -11,6 +11,7 @@
     <EntitySetMapping Name="Appointments">
       <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Appointment">
         <MappingFragment StoreEntitySet="Appointments">
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
           <ScalarProperty Name="AppointmentId" ColumnName="AppointmentId" />
           <ScalarProperty Name="Receiver" ColumnName="Receiver" />
           <ScalarProperty Name="Sender" ColumnName="Sender" />

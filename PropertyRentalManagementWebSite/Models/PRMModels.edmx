@@ -34,6 +34,7 @@
           <Property Name="from" Type="time" Precision="7" Nullable="false" />
           <Property Name="to" Type="time" Precision="7" Nullable="false" />
           <Property Name="Purpose" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Buildings">
           <Key>
@@ -218,6 +219,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Appointments_Statuses">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="1" />
+          <End Role="Appointments" Type="Self.Appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Appointments">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="PropertyRentalManagementDBModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Apartments" EntityType="Self.Apartments" Schema="dbo" store:Type="Tables" />
@@ -271,6 +284,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Apartments" EntitySet="Apartments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Appointments_Statuses" Association="Self.FK_Appointments_Statuses">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="Appointments" EntitySet="Appointments" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -295,6 +312,8 @@
           <Property Name="Purpose" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK__Appointme__Recei__33D4B598" FromRole="Appointments" ToRole="Users" />
           <NavigationProperty Name="User1" Relationship="Self.FK__Appointme__Sende__34C8D9D1" FromRole="Appointments" ToRole="Users" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Status" Relationship="PropertyRentalManagementDBModel.FK_Appointments_Statuses" FromRole="Appointment" ToRole="Status" />
         </EntityType>
         <EntityType Name="Building">
           <Key>
@@ -328,6 +347,7 @@
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Users__StatusId__3A81B327" FromRole="Statuses" ToRole="Users" />
           <NavigationProperty Name="Apartments" Relationship="PropertyRentalManagementDBModel.FK_Apartments_Statuses" FromRole="Status" ToRole="Apartment" />
+          <NavigationProperty Name="Appointments" Relationship="PropertyRentalManagementDBModel.FK_Appointments_Statuses" FromRole="Status" ToRole="Appointment" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -496,6 +516,10 @@
             <End Role="Status" EntitySet="Statuses" />
             <End Role="Apartment" EntitySet="Apartments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Appointments_Statuses" Association="PropertyRentalManagementDBModel.FK_Appointments_Statuses">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="Appointment" EntitySet="Appointments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Apartment">
           <Key>
@@ -565,6 +589,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Appointments_Statuses">
+          <End Type="PropertyRentalManagementDBModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="PropertyRentalManagementDBModel.Appointment" Role="Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -581,6 +617,7 @@
           <EntitySetMapping Name="Appointments">
             <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Appointment">
               <MappingFragment StoreEntitySet="Appointments">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="AppointmentId" ColumnName="AppointmentId" />
                 <ScalarProperty Name="Receiver" ColumnName="Receiver" />
                 <ScalarProperty Name="Sender" ColumnName="Sender" />

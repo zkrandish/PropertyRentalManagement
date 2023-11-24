@@ -17,7 +17,8 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Appointments
         public ActionResult Index()
         {
-           
+            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var currentUserId = currentUser?.UserId;
             string userRole = Session["UserRole"] as string;
 
             if (userRole != "Manager" && userRole != "Tenant")
@@ -35,16 +36,16 @@ namespace PropertyRentalManagementWebSite.Controllers
             }
             else if (userRole == "Tenant")
             {
-                var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                
                 // If the user is a tenant, they only see appointments related to them
-                var currentUserId = currentUser.UserId;
+                 currentUserId = currentUser.UserId;
                 appointmentsQuery = db.Appointments.Where(a => a.Receiver == currentUserId || a.Sender == currentUserId)
                                                    .Include(a => a.User).Include(a => a.User1);
                 // Additional logic for tenants, if any
             }
 
             var appointmentsList = appointmentsQuery.ToList();
-
+            ViewBag.CurrentUserId = currentUserId;
             return View(appointmentsList);
             
         }
@@ -194,6 +195,32 @@ namespace PropertyRentalManagementWebSite.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MarkAsRead(int appointmentId)
+        {
+            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            if (currentUser == null)
+            {
+                return RedirectToAction("Error");
+            }
+
+            var appointment = db.Appointments.Find(appointmentId);
+            if (appointment == null || appointment.Receiver != currentUser.UserId)
+            {
+                return RedirectToAction("UnauthorizedAccess");
+            }
+
+            var readStatus = db.Statuses.FirstOrDefault(s => s.Description == "Read");
+            if (readStatus != null)
+            {
+                appointment.StatusId = readStatus.StatusId;
+                db.Entry(appointment).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            TempData["SuccessMessage"] = "Appointment has been marked as read.";
+            return RedirectToAction("Index"); // Redirect back to the dashboard
         }
     }
 }

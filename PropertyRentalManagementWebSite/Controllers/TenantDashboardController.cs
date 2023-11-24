@@ -1,6 +1,7 @@
 ﻿using PropertyRentalManagementWebSite.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -27,7 +28,7 @@ namespace PropertyRentalManagementWebSite.Controllers
                 //to check the appointments
                 var userId = currentUser.UserId;
                 var upcomingAppointments = db.Appointments
-                    .Where(a => a.Receiver == userId && a.AppointmentDate >= DateTime.Now)
+                    .Where(a => a.Receiver == userId && a.AppointmentDate >= DateTime.Now && a.Status.Description == "Unread")
                     .OrderBy(a => a.AppointmentDate)
                     .ToList();
                 ViewBag.UpcomingAppointments = upcomingAppointments;
@@ -44,5 +45,8 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             return RedirectToAction("Index", "Appointments");
         }
+
+        
+
     }
 }
