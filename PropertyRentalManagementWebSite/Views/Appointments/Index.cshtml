@@ -66,13 +66,13 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.AppointmentId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.AppointmentId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.AppointmentId })
-                @if (item.Receiver == ViewBag.CurrentUserId) 
+              
+                @if (item.Receiver == ViewBag.CurrentUserId && item.Status.Description == "UnRead")
                 {
-                    using (Html.BeginForm("MarkAsRead", "Appointments", FormMethod.Post, new { @class = "inline-form" }))
+                    using (Html.BeginForm("MarkAsRead", "Appointments", new { appointmentId = item.AppointmentId }, FormMethod.Post, new { @class = "inline-form" }))
                     {
                         @Html.AntiForgeryToken()
-                        @Html.Hidden("appointmentId", item.AppointmentId)
-                        <input type="submit" value="Mark as Read" class="btn btn-primary" />
+                        <input type="submit" value="Mark as Read" class="btn btn-primary btn-sm" />
                     }
                 }
 

@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Manager Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var unreadMessages = ViewBag.UnreadMessages as IEnumerable<PropertyRentalManagementWebSite.Models.Message>;
+   
 }
 
 <h2>Manager Dashboard</h2>
@@ -17,18 +17,18 @@
 }
 
 @*@if (unreadMessages != null && unreadMessages.Any())
-{
-    <div class="alert alert-info">
-        <strong>You have unread messages:</strong>
-        @foreach (var message in unreadMessages)
-        {
-        <p>
-            Message from @message.Sender (sent on @message.SendDate.ToString("g")): @message.MessageContent
-            <a href="@Url.Action("MarkAsRead", "Messages", new { id = message.MessageId })" class="btn btn-primary btn-sm">Mark as Read</a>
-        </p>
-        }
-    </div>
-}*@
+    {
+        <div class="alert alert-info">
+            <strong>You have unread messages:</strong>
+            @foreach (var message in unreadMessages)
+            {
+            <p>
+                Message from @message.Sender (sent on @message.SendDate.ToString("g")): @message.MessageContent
+                <a href="@Url.Action("MarkAsRead", "Messages", new { id = message.MessageId })" class="btn btn-primary btn-sm">Mark as Read</a>
+            </p>
+            }
+        </div>
+    }*@
 
 <div class="upcoming-appointments">
     <h3>Upcoming Appointments</h3>
@@ -53,6 +53,30 @@
         <p> You already see all the appointments schedule</p>
     }
 </div>
+<div class="unread-messages">
+    <h3>Unread Messages</h3>
+    @{
+        var unreadMessages = ViewBag.UnreadMessages as IEnumerable<PropertyRentalManagementWebSite.Models.Message>;
+    }
+
+    @if (unreadMessages != null && unreadMessages.Any())
+    {
+        <div class="alert alert-info">
+            <strong>You have unread messages:</strong>
+            @foreach (var message in unreadMessages)
+            {
+                <p>Message from @message.User1.UserName (on @message.SendDate.ToString("g")): @message.Message1</p>
+              
+                <!-- Additional details or actions for the message -->
+            }
+        </div>
+    }
+    else
+    {
+        <p>You have no unread messages.</p>
+    }
+</div>
+
 
 
 

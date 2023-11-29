@@ -37,12 +37,12 @@ namespace PropertyRentalManagementWebSite.Controllers
                 ViewBag.PendingApprovalsCount = pendingApprovalsCount;
 
                 //to check the messages
-                //var userId = currentUser.UserId;
-                //var unreadMessages = db.Messages
-                //    .Where(a => a.Receiver == userId && a.SendDate <= DateTime.Now && a.Status.Description == "UnRead")
-                //    .OrderBy(a => a.AppointmentDate)
-                //    .ToList();
-                //ViewBag.UpcomingAppointments = unreadAppointments;
+
+                var unreadMessages = db.Messages
+                    .Where(m => m.Receiver == userId && m.Status.Description == "Unread")
+                    .ToList();
+
+                ViewBag.UnreadMessages = unreadMessages;
                 return View();
 
             }
