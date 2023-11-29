@@ -1,59 +1,77 @@
-﻿@model PropertyRentalManagementWebSite.Models.Message
+﻿
+
+@model PropertyRentalManagementWebSite.Models.Message
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Message";
+    var isReply = ViewBag.IsReply != null && (bool)ViewBag.IsReply;
+    var receiverId = isReply ? ViewBag.OriginalSenderId : null;
 }
 
-<h2>Create</h2>
+<h2>Create Message</h2>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <h4>Message</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @*// If replying to a message, lock the Receiver and display as static text*@
+    @if (isReply)
+    {
     <div class="form-group">
-        @Html.LabelFor(model => model.Receiver, "Receiver", htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">To:</label>
         <div class="col-md-10">
-            @Html.DropDownList("Receiver", null, htmlAttributes: new { @class = "form-control" })
+            <p class="form-control-static">@ViewBag.OriginalSenderName</p>
+            @Html.HiddenFor(model => model.Receiver, new { @Value = receiverId })
+        </div>
+    </div>
+    }
+    @*// If not a reply, allow user to select Receiver*@
+    else
+    {
+    <div class="form-group">
+        @Html.LabelFor(model => model.Receiver, "Receiver", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("Receiver", ViewBag.Receiver as SelectList, "-- Select Receiver --", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Receiver, "", new { @class = "text-danger" })
         </div>
     </div>
+    }
 
+
+    @*// The sender is always the current logged-in user, shown for information*@
     <div class="form-group">
-        @Html.LabelFor(model => model.Sender, "Sender", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Sender, "Sender", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <input type="text" value="@User.Identity.Name" class="form-control" disabled="disabled" />
+            <input type="text" value="@User.Identity.Name" class="form-control" readonly />
+            @Html.HiddenFor(model => model.Sender) 
         </div>
     </div>
 
-    @*<div class="form-group">
-            @Html.LabelFor(model => model.Sender, "Sender", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Sender", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Sender, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
+    @*// Message text input*@
     <div class="form-group">
-        @Html.LabelFor(model => model.Message1, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.Message1, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Message1, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Message1, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.SendDate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.SendDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SendDate, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    @*// Automatically set the send date to now for a new message*@
+    @Html.HiddenFor(model => model.SendDate, new { @Value = DateTime.Now })
 
+ 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Create" class="btn btn-default" />

@@ -66,11 +66,11 @@ namespace PropertyRentalManagementWebSite.Controllers
         }
 
         // GET: Messages/Create
-        public ActionResult Create()
+        public ActionResult Create(int? replyToSenderId = null)
         {
             // Find the UserId based on the UserName in the database
             var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-
+            ViewBag.IsReply = false;
             if (currentUser == null)
             {
                 // Handle the case where the user is not found - perhaps redirect to an error page or log out
@@ -80,7 +80,8 @@ namespace PropertyRentalManagementWebSite.Controllers
             var message = new Message
             {
                 // If user is found, it is safe to use the Value property because user.UserId will not be null
-                Sender = currentUser.UserId
+                Sender = currentUser.UserId,
+                 SendDate = DateTime.Now
             };
             if (currentUser.UserType.UserRole == "Manager")
             {
@@ -105,6 +106,28 @@ namespace PropertyRentalManagementWebSite.Controllers
                 ModelState.AddModelError("", "Default status not found.");
                 return View(message);
             }
+            if (replyToSenderId.HasValue)
+            {
+                var originalSender = db.Users.Find(replyToSenderId.Value);
+                if (originalSender != null)
+                {
+                    ViewBag.IsReply = true;
+                    ViewBag.OriginalSenderId = originalSender.UserId;
+                    ViewBag.OriginalSenderName = originalSender.UserName;
+                    message.Receiver = originalSender.UserId;
+                }
+                else
+                {
+                    // Handle error: original sender not found
+                    ViewBag.IsReply = false;
+                }
+            }
+            else
+            {
+                ViewBag.IsReply = false;
+                // Populate the Receiver SelectList for non-reply messages
+                ViewBag.Receiver = new SelectList(db.Users, "UserId", "UserName");
+            }
 
             // Pass the message  object to the view, which has the Sender set
             return View(message);
@@ -128,6 +151,8 @@ namespace PropertyRentalManagementWebSite.Controllers
             }
             if (ModelState.IsValid)
             {
+                // Set the send date here
+                message.SendDate = DateTime.Now;
                 // Set the sender from the current logged-in user
                 message.Sender = currentUser.UserId;
                 // Ensure the StatusId is set for the new message
@@ -143,8 +168,10 @@ namespace PropertyRentalManagementWebSite.Controllers
                         return View(message);
                     }
                 
-                    db.Messages.Add(message);
+                 db.Messages.Add(message);
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Message created successfully.";
+                
                 return RedirectToAction("Index");
             }
 
@@ -224,48 +251,6 @@ namespace PropertyRentalManagementWebSite.Controllers
             base.Dispose(disposing);
         }
        
-        public ActionResult GetUnreadMessages()
-        {
-            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-           
-            var unreadMessages = db.Messages
-                .Where(m => m.Receiver == currentUser.UserId && m.Status.Description == "Unread")
-                .ToList();
-
-            ViewBag.UnreadMessages = unreadMessages; // Send this to the view
-            return View();
-        }
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult MarkAsRead(int messageId)
-        //{
-        //    var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-        //    if (currentUser == null)
-        //    {
-        //        return RedirectToAction("Error");
-        //    }
-
-        //    var message = db.Messages.Find(messageId);
-        //    if (message == null || message.Receiver != currentUser.UserId)
-        //    {
-        //        return RedirectToAction("UnauthorizedAccess");
-        //    }
-        //    if (message.Status.Description == "Unread")
-        //    {
-
-        //        var readStatus = db.Statuses.FirstOrDefault(s => s.Description == "Read");
-        //        if (readStatus != null)
-        //        {
-        //            message.StatusId = readStatus.StatusId;
-        //            db.Entry(message).State = EntityState.Modified;
-        //            db.SaveChanges();
-        //        }
-        //    }
-        //        TempData["SuccessMessage"] = "Message has been marked as read.";
-        //        return RedirectToAction("Index"); // Redirect back to the dashboard
-        //    }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -314,6 +299,47 @@ namespace PropertyRentalManagementWebSite.Controllers
             }
 
             return RedirectToAction("Index"); // Redirect back to the dashboard
+        }
+
+        public ActionResult CreateReply(int receiverId, int originalMessageId)
+        {
+            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            if (currentUser == null)
+            {
+                
+                return RedirectToAction("Error");
+            }
+
+            var originalSender = db.Users.Find(receiverId);
+            if (originalSender == null)
+            {
+             
+                return RedirectToAction("Error");
+            }
+
+            // Retrieve the original message by ID
+            var originalMessage = db.Messages.Find(originalMessageId);
+            if (originalMessage == null)
+            {
+                // Handle error: original message not found
+                return RedirectToAction("Error");
+            }
+
+            // Create a new message as a reply, pre-filling some fields
+            var message = new Message
+            {
+                Receiver = receiverId, // Set the receiver to the sender of the original message
+                Sender = currentUser.UserId, // The current user is the sender
+                Message1 = $"Replying to your message: \"{originalMessage.Message1}\"", // Example of quoting the original message
+                SendDate = DateTime.Now,
+                // Here you would set the default status ID for "Unread"
+            };
+
+            ViewBag.IsReply = true; // To identify in the view that this is a reply
+            ViewBag.OriginalSenderName = originalSender.UserName; // To show in the view
+            ViewBag.OriginalMessageContent = originalMessage.Message1; // To display the original message content in the view if needed
+
+            return View("Create", message); // Reuse the Create view for replies
         }
 
 
