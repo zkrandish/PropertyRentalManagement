@@ -32,6 +32,14 @@ namespace PropertyRentalManagementWebSite.Controllers
                     .OrderBy(a => a.AppointmentDate)
                     .ToList();
                 ViewBag.UpcomingAppointments = upcomingAppointments;
+
+                //to check the messages
+
+                var unreadMessages = db.Messages
+                    .Where(m => m.Receiver == userId && m.Status.Description == "Unread")
+                    .ToList();
+
+                ViewBag.UnreadMessages = unreadMessages;
                 return View();
             }
             return View("UnauthorizedAccess");

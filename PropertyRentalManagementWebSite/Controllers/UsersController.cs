@@ -44,6 +44,21 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             ViewBag.StatusId = new SelectList(db.Statuses, "StatusId", "Description");
             ViewBag.UserTypeId = new SelectList(db.UserTypes, "UserTypeId", "UserRole");
+            var ownerRole = "Owner"; // Define the role name for owners
+            var managerTypeId = db.UserTypes.FirstOrDefault(ut => ut.UserRole == "Manager")?.UserTypeId; // Get the ID for the manager role
+            var userRole = Session["UserRole"] as string;
+
+            if (userRole == ownerRole && managerTypeId.HasValue)
+            {
+                ViewBag.UserTypeId = managerTypeId.Value; // Set the manager type ID as an integer
+                ViewBag.IsOwner = true;
+            }
+            else
+            {
+                ViewBag.UserTypeId = new SelectList(db.UserTypes, "UserTypeId", "UserRole");
+                ViewBag.IsOwner = false;
+            }
+
             return View();
         }
 
@@ -197,7 +212,9 @@ namespace PropertyRentalManagementWebSite.Controllers
                 return sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
+
+
     }
-  
+
 }
 

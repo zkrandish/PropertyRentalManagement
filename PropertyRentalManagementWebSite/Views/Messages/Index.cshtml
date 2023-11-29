@@ -50,10 +50,15 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.MessageId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.MessageId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.MessageId })
-                @Html.ActionLink("Reply", "Create", new { replyToSenderId = item.Sender }, new { @class = "btn btn-secondary btn-sm" })
+                @if (ViewBag.CurrentUserId == item.Receiver && ViewBag.CurrentUserId != item.Sender)
+                {
+                    // Show Reply button
+                    @Html.ActionLink("Reply", "CreateReply", new { receiverId = item.Sender, originalMessageId = item.MessageId }, new { @class = "btn btn-secondary btn-sm" })
+                }
+                @*@Html.ActionLink("Reply", "Create", new { replyToSenderId = item.Sender }, new { @class = "btn btn-secondary btn-sm" })*@
 
 
-                @*@Html.ActionLink("Reply", "CreateReply", new { receiverId = item.Sender, originalMessageId = item.MessageId }, new { @class = "btn btn-secondary btn-sm" })*@
+
 
 
                 @if (item.Receiver == ViewBag.CurrentUserId && item.Status.Description == "UnRead")

@@ -53,6 +53,10 @@ namespace PropertyRentalManagementWebSite.Controllers
                 {
                     return RedirectToAction("Index", "TenantDashboard");
                 }
+                if (userRole == "Owner")
+                {
+                    return RedirectToAction("Index", "OwnerDashboard");
+                }
 
                 return RedirectToAction("Index", "Home");
             }

@@ -31,6 +31,30 @@
     }
 </div>
 
+<div class="unread-messages">
+    <h3>Unread Messages</h3>
+    @{
+        var unreadMessages = ViewBag.UnreadMessages as IEnumerable<PropertyRentalManagementWebSite.Models.Message>;
+    }
+
+    @if (unreadMessages != null && unreadMessages.Any())
+    {
+        <div class="alert alert-info">
+            <strong>You have unread messages:</strong>
+            @foreach (var message in unreadMessages)
+            {
+                <p>Message from @message.User1.UserName (on @message.SendDate.ToString("g")): @message.Message1</p>
+
+                <!-- Additional details or actions for the message -->
+            }
+        </div>
+    }
+    else
+    {
+        <p>You have no unread messages.</p>
+    }
+</div>
+
 <div class="list-group">
 
     @Html.ActionLink("List of Apartments", "Index", "Apartments", null, new { @class = "list-group-item list-group-item-action" })
