@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using PropertyRentalManagementWebSite.Models;
 
 namespace PropertyRentalManagementWebSite.Controllers
@@ -92,6 +93,19 @@ namespace PropertyRentalManagementWebSite.Controllers
                 var managers = db.Users.Where(u => u.UserType.UserRole == "Manager").ToList();
                 ViewBag.Receiver = new SelectList(managers, "UserId", "UserName");
             }
+            // Prepare the default status
+            var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "Unread");
+            if (defaultStatus != null)
+            {
+                appointment.StatusId = defaultStatus.StatusId; // Assign the default status ID for new messages
+            }
+            else
+            {
+                // Handle the case where the default status is not found
+                // You may want to log this error or handle it as per your business logic
+                ModelState.AddModelError("", "Default status not found.");
+                return View(appointment);
+            }
 
 
             // Pass the appointment object to the view, which has the Sender set
@@ -117,6 +131,19 @@ namespace PropertyRentalManagementWebSite.Controllers
             {
                 // Set the sender from the current logged-in user
                 appointment.Sender = currentUser.UserId;
+                // Ensure the StatusId is set for the new message
+                var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "Unread");
+                if (defaultStatus != null)
+                {
+                    appointment.StatusId = defaultStatus.StatusId;
+                }
+                else
+                {
+                    // Handle the case where the default status is not found
+                    ModelState.AddModelError("", "Default status not found.");
+                    return View(appointment);
+                }
+
                 db.Appointments.Add(appointment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
