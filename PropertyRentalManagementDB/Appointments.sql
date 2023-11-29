@@ -7,6 +7,8 @@
     [from] TIME NOT NULL,
     [to] TIME NOT NULL,
     [Purpose] NVARCHAR(255) NOT NULL,
+    [StatusId] INT NOT NULL, 
     FOREIGN KEY (Receiver) REFERENCES [Users](UserId) ,
-    FOREIGN KEY (Sender) REFERENCES [Users](UserId) 
+    FOREIGN KEY (Sender) REFERENCES [Users](UserId), 
+    FOREIGN KEY (StatusId) REFERENCES [Statuses](StatusId) 
 )

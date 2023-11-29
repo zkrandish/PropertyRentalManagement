@@ -19,8 +19,10 @@ namespace PropertyRentalManagementWebSite.Models
         public int Sender { get; set; }
         public string Message1 { get; set; }
         public System.DateTime SendDate { get; set; }
+        public int StatusId { get; set; }
     
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual Status Status { get; set; }
     }
 }

@@ -45,6 +45,8 @@
     <Property Name="SendDate" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="User" Relationship="Self.FK__Messages__Receiv__38996AB5" FromRole="Messages" ToRole="Users" />
     <NavigationProperty Name="User1" Relationship="Self.FK__Messages__Sender__398D8EEE" FromRole="Messages" ToRole="Users" />
+    <Property Name="StatusId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Status" Relationship="PropertyRentalManagementDBModel.FK_Messages_Statuses" FromRole="Message" ToRole="Status" />
   </EntityType>
   <EntityType Name="Status">
     <Key>
@@ -55,6 +57,7 @@
     <NavigationProperty Name="Users" Relationship="Self.FK__Users__StatusId__3A81B327" FromRole="Statuses" ToRole="Users" />
     <NavigationProperty Name="Apartments" Relationship="PropertyRentalManagementDBModel.FK_Apartments_Statuses" FromRole="Status" ToRole="Apartment" />
     <NavigationProperty Name="Appointments" Relationship="PropertyRentalManagementDBModel.FK_Appointments_Statuses" FromRole="Status" ToRole="Appointment" />
+    <NavigationProperty Name="Messages" Relationship="PropertyRentalManagementDBModel.FK_Messages_Statuses" FromRole="Status" ToRole="Message" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -227,6 +230,10 @@
       <End Role="Status" EntitySet="Statuses" />
       <End Role="Appointment" EntitySet="Appointments" />
     </AssociationSet>
+    <AssociationSet Name="FK_Messages_Statuses" Association="PropertyRentalManagementDBModel.FK_Messages_Statuses">
+      <End Role="Status" EntitySet="Statuses" />
+      <End Role="Message" EntitySet="Messages" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Apartment">
     <Key>
@@ -304,6 +311,18 @@
         <PropertyRef Name="StatusId" />
       </Principal>
       <Dependent Role="Appointment">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Messages_Statuses">
+    <End Type="PropertyRentalManagementDBModel.Status" Role="Status" Multiplicity="1" />
+    <End Type="PropertyRentalManagementDBModel.Message" Role="Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="Message">
         <PropertyRef Name="StatusId" />
       </Dependent>
     </ReferentialConstraint>

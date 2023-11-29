@@ -1,0 +1,37 @@
+﻿** Highlights
+     Tables that will be recreated with data migrated
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       The column [dbo].[Messages].[StatusId] is being dropped, data loss could occur.
+       The column [dbo].[Users].[Email] is being dropped, data loss could occur.
+       The column [dbo].[Users].[UserName] is being dropped, data loss could occur.
+
+** User actions
+     Drop
+       unnamed constraint on [dbo].[Appointments] (Default Constraint)
+       [dbo].[DF_Messages_StatusId] (Default Constraint)
+       unnamed constraint on [dbo].[Users] (Default Constraint)
+       unnamed constraint on [dbo].[Users] (Default Constraint)
+       [dbo].[FK_Apartments_Statuses] (Foreign Key)
+       [dbo].[FK_Apartments_Tenants] (Foreign Key)
+       unnamed constraint on [dbo].[Apartments] (Foreign Key)
+       [dbo].[FK_Appointments_Statuses] (Foreign Key)
+       [dbo].[FK_Messages_Statuses] (Foreign Key)
+     Alter
+       [dbo].[Messages] (Table)
+       [dbo].[Users] (Table)
+     Create
+       Foreign Key: unnamed constraint on [dbo].[Apartments] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Apartments] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Appointments] (Foreign Key)
+
+** Supporting actions
+
+The column [dbo].[Messages].[StatusId] is being dropped, data loss could occur.
+The column [dbo].[Users].[Email] is being dropped, data loss could occur.
+The column [dbo].[Users].[UserName] is being dropped, data loss could occur.
+

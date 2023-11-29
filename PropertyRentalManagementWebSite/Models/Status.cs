@@ -20,6 +20,7 @@ namespace PropertyRentalManagementWebSite.Models
             this.Users = new HashSet<User>();
             this.Apartments = new HashSet<Apartment>();
             this.Appointments = new HashSet<Appointment>();
+            this.Messages = new HashSet<Message>();
         }
     
         public int StatusId { get; set; }
@@ -31,5 +32,7 @@ namespace PropertyRentalManagementWebSite.Models
         public virtual ICollection<Apartment> Apartments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Appointment> Appointments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Message> Messages { get; set; }
     }
 }

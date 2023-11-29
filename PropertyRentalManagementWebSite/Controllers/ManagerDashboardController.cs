@@ -35,6 +35,14 @@ namespace PropertyRentalManagementWebSite.Controllers
 
                 int pendingApprovalsCount = db.Users.Count(u => u.Status.Description == "Pending");
                 ViewBag.PendingApprovalsCount = pendingApprovalsCount;
+
+                //to check the messages
+                //var userId = currentUser.UserId;
+                //var unreadMessages = db.Messages
+                //    .Where(a => a.Receiver == userId && a.SendDate <= DateTime.Now && a.Status.Description == "UnRead")
+                //    .OrderBy(a => a.AppointmentDate)
+                //    .ToList();
+                //ViewBag.UpcomingAppointments = unreadAppointments;
                 return View();
 
             }

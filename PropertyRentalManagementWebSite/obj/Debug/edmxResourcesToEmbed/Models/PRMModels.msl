@@ -36,6 +36,7 @@
     <EntitySetMapping Name="Messages">
       <EntityTypeMapping TypeName="PropertyRentalManagementDBModel.Message">
         <MappingFragment StoreEntitySet="Messages">
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
           <ScalarProperty Name="MessageId" ColumnName="MessageId" />
           <ScalarProperty Name="Receiver" ColumnName="Receiver" />
           <ScalarProperty Name="Sender" ColumnName="Sender" />

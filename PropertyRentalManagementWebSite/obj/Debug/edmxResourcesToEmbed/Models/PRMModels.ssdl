@@ -50,6 +50,7 @@
     <Property Name="Sender" Type="int" Nullable="false" />
     <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
     <Property Name="SendDate" Type="datetime" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Statuses">
     <Key>
@@ -226,6 +227,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Messages_Statuses">
+    <End Role="Statuses" Type="Self.Statuses" Multiplicity="1" />
+    <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Statuses">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="Messages">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="PropertyRentalManagementDBModelStoreContainer">
     <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Apartments" EntityType="Self.Apartments" Schema="dbo" store:Type="Tables" />
@@ -282,6 +295,10 @@
     <AssociationSet Name="FK_Appointments_Statuses" Association="Self.FK_Appointments_Statuses">
       <End Role="Statuses" EntitySet="Statuses" />
       <End Role="Appointments" EntitySet="Appointments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Messages_Statuses" Association="Self.FK_Messages_Statuses">
+      <End Role="Statuses" EntitySet="Statuses" />
+      <End Role="Messages" EntitySet="Messages" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

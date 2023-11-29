@@ -45,8 +45,12 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             return RedirectToAction("Index", "Appointments");
         }
+        public ActionResult SendMessage()
+        {
+            return RedirectToAction("Index", "Messages");
+        }
 
-        
+
 
     }
 }
