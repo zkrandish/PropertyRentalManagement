@@ -47,8 +47,7 @@ namespace PropertyRentalManagementWebSite.Controllers
             var messagesList = messagesQuery.ToList();
             ViewBag.CurrentUserId = currentUserId;
             return View(messagesList);
-            //var messages = db.Messages.Include(m => m.User).Include(m => m.User1);
-            //return View(messages.ToList());
+           
         }
 
         // GET: Messages/Details/5
@@ -94,7 +93,7 @@ namespace PropertyRentalManagementWebSite.Controllers
                 ViewBag.Receiver = new SelectList(managers, "UserId", "UserName");
             }
             // Prepare the default status
-            var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "Unread");
+            var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "UnRead");
             if (defaultStatus != null)
             {
                 message.StatusId = defaultStatus.StatusId; // Assign the default status ID for new messages
@@ -132,7 +131,7 @@ namespace PropertyRentalManagementWebSite.Controllers
                 // Set the sender from the current logged-in user
                 message.Sender = currentUser.UserId;
                 // Ensure the StatusId is set for the new message
-                  var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "Unread");
+                  var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "UnRead");
                     if (defaultStatus != null)
                     {
                         message.StatusId = defaultStatus.StatusId;
@@ -224,5 +223,99 @@ namespace PropertyRentalManagementWebSite.Controllers
             }
             base.Dispose(disposing);
         }
+       
+        public ActionResult GetUnreadMessages()
+        {
+            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+           
+            var unreadMessages = db.Messages
+                .Where(m => m.Receiver == currentUser.UserId && m.Status.Description == "Unread")
+                .ToList();
+
+            ViewBag.UnreadMessages = unreadMessages; // Send this to the view
+            return View();
+        }
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult MarkAsRead(int messageId)
+        //{
+        //    var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+        //    if (currentUser == null)
+        //    {
+        //        return RedirectToAction("Error");
+        //    }
+
+        //    var message = db.Messages.Find(messageId);
+        //    if (message == null || message.Receiver != currentUser.UserId)
+        //    {
+        //        return RedirectToAction("UnauthorizedAccess");
+        //    }
+        //    if (message.Status.Description == "Unread")
+        //    {
+
+        //        var readStatus = db.Statuses.FirstOrDefault(s => s.Description == "Read");
+        //        if (readStatus != null)
+        //        {
+        //            message.StatusId = readStatus.StatusId;
+        //            db.Entry(message).State = EntityState.Modified;
+        //            db.SaveChanges();
+        //        }
+        //    }
+        //        TempData["SuccessMessage"] = "Message has been marked as read.";
+        //        return RedirectToAction("Index"); // Redirect back to the dashboard
+        //    }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MarkAsRead(int messageId)
+        {
+            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            if (currentUser == null)
+            {
+                return RedirectToAction("Error");
+            }
+
+            var message = db.Messages.Include(m => m.Status).FirstOrDefault(m => m.MessageId == messageId);
+            if (message == null || message.Receiver != currentUser.UserId)
+            {
+                return RedirectToAction("UnauthorizedAccess");
+            }
+
+            if (message.Status.Description == "UnRead")
+            {
+                var readStatus = db.Statuses.FirstOrDefault(s => s.Description == "Read");
+                if (readStatus != null)
+                {
+                    message.StatusId = readStatus.StatusId;
+                    try
+                    {
+                        db.Entry(message).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error (uncomment ex variable name and add logging here)
+                        TempData["ErrorMessage"] = "An error occurred while marking the message as read.";
+                        return RedirectToAction("Index");
+                    }
+
+                    TempData["SuccessMessage"] = "Message has been marked as read.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Read status not found.";
+                }
+            }
+            else
+            {
+                TempData["InfoMessage"] = "Message is already marked as read.";
+            }
+
+            return RedirectToAction("Index"); // Redirect back to the dashboard
+        }
+
+
     }
 }

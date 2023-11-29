@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Manager Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var unreadMessages = ViewBag.UnreadMessages as IEnumerable<PropertyRentalManagementWebSite.Models.Message>;
 }
 
 <h2>Manager Dashboard</h2>
@@ -14,6 +15,21 @@
         You have @ViewBag.PendingApprovalsCount tenant(s) pending approval.
     </div>
 }
+
+@*@if (unreadMessages != null && unreadMessages.Any())
+{
+    <div class="alert alert-info">
+        <strong>You have unread messages:</strong>
+        @foreach (var message in unreadMessages)
+        {
+        <p>
+            Message from @message.Sender (sent on @message.SendDate.ToString("g")): @message.MessageContent
+            <a href="@Url.Action("MarkAsRead", "Messages", new { id = message.MessageId })" class="btn btn-primary btn-sm">Mark as Read</a>
+        </p>
+        }
+    </div>
+}*@
+
 <div class="upcoming-appointments">
     <h3>Upcoming Appointments</h3>
 
@@ -45,4 +61,5 @@
     @Html.ActionLink("Manage Apartments", "Index", "Apartments", null, new { @class = "list-group-item list-group-item-action" })
     @Html.ActionLink("Manage Appointments", "Index", "Appointments", null, new { @class = "list-group-item list-group-item-action" })
     @Html.ActionLink("Pending Tenant Approvals", "PendingTenantApprovals", "ManagerDashboard", null, new { @class = "list-group-item list-group-item-action" })
+    @Html.ActionLink("Manage Messages", "Index", "Messages", null, new { @class = "list-group-item list-group-item-action" })
 </div>

@@ -5,7 +5,12 @@
 }
 
 <h2>Index</h2>
-
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -26,26 +31,36 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Message1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SendDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User1.UserName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.MessageId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MessageId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.MessageId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User1.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MessageId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.MessageId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MessageId })
+                @if (item.Receiver == ViewBag.CurrentUserId && item.Status.Description == "UnRead")
+                {
+                    using (Html.BeginForm("MarkAsRead", "Messages", new { messageId = item.MessageId }, FormMethod.Post, new { @class = "inline-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Mark as Read" class="btn btn-primary btn-sm" />
+                    }
+                }
+            </td>
+        </tr>
+    }
+
 
 </table>
