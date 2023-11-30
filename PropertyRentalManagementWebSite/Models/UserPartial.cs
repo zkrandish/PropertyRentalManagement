@@ -12,6 +12,7 @@ namespace PropertyRentalManagementWebSite.Models
 
         [NotMapped]
         [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password is required.")]
         public string PasswordString { get; set; }
     }
 }

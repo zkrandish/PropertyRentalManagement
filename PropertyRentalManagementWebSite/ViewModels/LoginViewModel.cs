@@ -10,11 +10,11 @@ namespace PropertyRentalManagementWebSite.ViewModels
     public class LoginViewModel
     {
 
-        [Required]
+        [Required(ErrorMessage = "user name is required.")]
         [Display(Name = "Username")]
         public string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
