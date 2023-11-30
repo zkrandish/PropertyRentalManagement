@@ -290,6 +290,7 @@
     <Content Include="Views\Messages\Edit.cshtml" />
     <Content Include="Views\Messages\Index.cshtml" />
     <Content Include="Views\OwnerDashboard\Index.cshtml" />
+    <Content Include="Views\ManagerDashboard\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

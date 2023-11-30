@@ -7,6 +7,12 @@
 @{
     ViewBag.Title = "PendingTenantApprovals";
 }
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 
 <h2>Pending Tenant Approvals</h2>
 <p>Review and approve pending tenant accounts.</p>

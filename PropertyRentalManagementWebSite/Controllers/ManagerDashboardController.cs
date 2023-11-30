@@ -71,24 +71,66 @@ namespace PropertyRentalManagementWebSite.Controllers
             var pendingUsers = db.Users.Where(u => u.Status.Description == "Pending").ToList();
             return View(pendingUsers); // Pass the list to the view
         }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken] 
+        //public ActionResult ApproveTenant(int id)
+        //{
+        //    var userToApprove = db.Users.Find(id);
+        //    if (userToApprove != null && userToApprove.Status.Description == "Pending")
+        //    {
+        //        var activeStatus = db.Statuses.FirstOrDefault(s => s.Description == "Active");
+        //        if (activeStatus != null)
+        //        {
+        //            userToApprove.StatusId = activeStatus.StatusId;
+        //            db.Entry(userToApprove).State = System.Data.Entity.EntityState.Modified;
+        //            db.SaveChanges();
+
+        //        }
+        //    }
+        //    return RedirectToAction("PendingTenantApprovals"); // Redirect back to the list
+        //}
+
         [HttpPost]
-        [ValidateAntiForgeryToken] 
+        [ValidateAntiForgeryToken]
         public ActionResult ApproveTenant(int id)
         {
-            var userToApprove = db.Users.Find(id);
-            if (userToApprove != null && userToApprove.Status.Description == "Pending")
+            try
             {
-                var activeStatus = db.Statuses.FirstOrDefault(s => s.Description == "Active");
-                if (activeStatus != null)
+                var userToApprove = db.Users.Find(id);
+                if (userToApprove != null && userToApprove.Status.Description == "Pending")
                 {
-                    userToApprove.StatusId = activeStatus.StatusId;
-                    db.Entry(userToApprove).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
-                    
+                    var activeStatus = db.Statuses.FirstOrDefault(s => s.Description == "Active");
+                    if (activeStatus != null)
+                    {
+                        userToApprove.StatusId = activeStatus.StatusId;
+                        db.Entry(userToApprove).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("PendingTenantApprovals"); // Successful case
+                    }
+                    else
+                    {
+                        TempData["Error"] = "Active status not found.";
+                    }
+                }
+                else
+                {
+                    TempData["Error"] = "User is either not found or not in a pending status.";
                 }
             }
-            return RedirectToAction("PendingTenantApprovals"); // Redirect back to the list
+            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
+            {
+                var errorMessages = ex.EntityValidationErrors
+                    .SelectMany(x => x.ValidationErrors)
+                    .Select(x => x.ErrorMessage);
+
+                var fullErrorMessage = string.Join("; ", errorMessages);
+                TempData["Error"] = "The validation errors are: " + fullErrorMessage;
+            }
+
+            // Redirect back to the list or to an error view if there was an error
+            return RedirectToAction("PendingTenantApprovals");
         }
-        
+
+
     }
 }

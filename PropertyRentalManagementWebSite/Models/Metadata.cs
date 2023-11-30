@@ -34,39 +34,39 @@ namespace PropertyRentalManagementWebSite.Models
 
     }
 
-    [MetadataType(typeof(UserMetadata))]
-    public partial class User
-    {
-        // The actual User model properties will be in another part of this partial class
-    }
+    //[MetadataType(typeof(UserMetadata))]
+    //public partial class User
+    //{
+    //    // The actual User model properties will be in another part of this partial class
+    //}
 
-    public class UserMetadata
-    {
-        [Required(ErrorMessage = "First name is required.")]
-        [Display(Name = "First Name")]
-        [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
-        public string FirstName { get; set; }
+    //public class UserMetadata
+    //{
+    //    [Required(ErrorMessage = "First name is required.")]
+    //    [Display(Name = "First Name")]
+    //    [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
+    //    public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Last name is required.")]
-        [Display(Name = "Last Name")]
-        [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
-        public string LastName { get; set; }
+    //    [Required(ErrorMessage = "Last name is required.")]
+    //    [Display(Name = "Last Name")]
+    //    [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
+    //    public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Username is required.")]
-        [Display(Name = "Username")]
-        [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters.")]
-        public string UserName { get; set; }
+    //    [Required(ErrorMessage = "Username is required.")]
+    //    [Display(Name = "Username")]
+    //    [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters.")]
+    //    public string UserName { get; set; }
 
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        public string Email { get; set; }
+    //    [Required(ErrorMessage = "Email is required.")]
+    //    [EmailAddress(ErrorMessage = "Invalid Email Address")]
+    //    public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required.")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+    //    [Required(ErrorMessage = "Password is required.")]
+    //    [DataType(DataType.Password)]
+    //    public string Password { get; set; }
 
 
-    }
+    //}
 
     [MetadataType(typeof(ApartmentMetadata))]
     public partial class Apartment
