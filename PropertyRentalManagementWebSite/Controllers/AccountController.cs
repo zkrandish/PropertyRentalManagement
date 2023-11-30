@@ -79,32 +79,40 @@ namespace PropertyRentalManagementWebSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Check if username/email already exists
-                if (db.Users.Any(u => u.UserName == model.Username) || db.Users.Any(u => u.Email == model.Email))
+                try
                 {
-                    ModelState.AddModelError("", "Username or Email already exists.");
-                    return View(model);
+                    // Check if username/email already exists
+                    if (db.Users.Any(u => u.UserName == model.Username) || db.Users.Any(u => u.Email == model.Email))
+                    {
+                        ModelState.AddModelError("", "Username or Email already exists.");
+                        return View(model);
+                    }
+                    var pendingStatus = db.Statuses.FirstOrDefault(s => s.Description.Equals("Pending", StringComparison.OrdinalIgnoreCase));
+
+                    var user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Password = HashPassword(model.Password),
+                        StatusId = pendingStatus.StatusId,
+                        UserTypeId = db.UserTypes.FirstOrDefault(ut => ut.UserRole == "Tenant").UserTypeId,
+                        UserName = model.Username,
+                        Email = model.Email,
+                    };
+
+                    db.Users.Add(user);
+                    db.SaveChanges();
+
+                    // Log the user in or redirect to a confirmation page
+                    //FormsAuthentication.SetAuthCookie(model.Username, false);
+                    return RedirectToAction("Login", "Account");
+                }catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
                 }
-                var pendingStatus = db.Statuses.FirstOrDefault(s => s.Description.Equals("Pending", StringComparison.OrdinalIgnoreCase));
+                }
+                
 
-                var user = new User
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Password = HashPassword(model.Password), 
-                    StatusId= pendingStatus.StatusId,
-                    UserTypeId = db.UserTypes.FirstOrDefault(ut => ut.UserRole == "Tenant").UserTypeId,
-                    UserName = model.Username,
-                    Email = model.Email,
-                };
-
-                db.Users.Add(user);
-                db.SaveChanges();
-
-                // Log the user in or redirect to a confirmation page
-                //FormsAuthentication.SetAuthCookie(model.Username, false);
-                return RedirectToAction("Login", "Account");
-            }
 
             // If we got this far, something failed, redisplay form
             return View(model);
