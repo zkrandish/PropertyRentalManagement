@@ -52,8 +52,9 @@
                 @Html.ActionLink("Delete", "Delete", new { id = item.MessageId })
                 @if (ViewBag.CurrentUserId == item.Receiver && ViewBag.CurrentUserId != item.Sender)
                 {
+                    @Html.ActionLink("Reply", "Create", new { replyToSenderId = item.Sender }, new { @class = "btn btn-secondary btn-sm" })
                     // Show Reply button
-                    @Html.ActionLink("Reply", "CreateReply", new { receiverId = item.Sender, originalMessageId = item.MessageId }, new { @class = "btn btn-secondary btn-sm" })
+                    @*@Html.ActionLink("Reply", "CreateReply", new { receiverId = item.Sender, originalMessageId = item.MessageId }, new { @class = "btn btn-secondary btn-sm" })*@
                 }
                 @*@Html.ActionLink("Reply", "Create", new { replyToSenderId = item.Sender }, new { @class = "btn btn-secondary btn-sm" })*@
 
