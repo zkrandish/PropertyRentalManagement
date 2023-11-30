@@ -15,7 +15,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         private PropertyRentalManagementDBEntities db = new PropertyRentalManagementDBEntities();
 
         // GET: Apartments
-        public ActionResult Index(int? searchStatus, string searchProvince, string searchCity)
+        public ActionResult Index(int? searchStatus, string searchProvince, string searchCity, string searchType)
         {
             var userRole = Session["UserRole"] as string;
             
@@ -56,12 +56,19 @@ namespace PropertyRentalManagementWebSite.Controllers
             {
                 apartmentsQuery = apartmentsQuery.Where(a => a.Building.City == searchCity);
             }
+            ViewBag.TypeList = new SelectList(db.Apartments.Select(a => a.Type).Distinct().ToList());
 
+            // Filter by type if searchType is not null or empty
+            if (!String.IsNullOrEmpty(searchType))
+            {
+                apartmentsQuery = apartmentsQuery.Where(a => a.Type == searchType);
+            }
             // Execute the query and convert to a list
             var apartmentsList = apartmentsQuery.ToList();
             // Pass the search criteria back to the view to maintain the state of the search form
             ViewBag.SearchProvince = searchProvince;
             ViewBag.SearchCity = searchCity;
+            ViewBag.SearchType = searchType;
 
             return View(apartmentsList);
         }
@@ -88,6 +95,7 @@ namespace PropertyRentalManagementWebSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
+          
             var managers = db.Users.Where(u=>u.UserType.UserRole=="Manager").ToList();
             var Tenants = db.Users.Where(u => u.UserType.UserRole == "Tenant").ToList();
             var statuses = db.Statuses.ToList(); // Fetch all statuses

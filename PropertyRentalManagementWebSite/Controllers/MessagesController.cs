@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -156,22 +157,22 @@ namespace PropertyRentalManagementWebSite.Controllers
                 // Set the sender from the current logged-in user
                 message.Sender = currentUser.UserId;
                 // Ensure the StatusId is set for the new message
-                  var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "UnRead");
-                    if (defaultStatus != null)
-                    {
-                        message.StatusId = defaultStatus.StatusId;
-                    }
-                    else
-                    {
-                        // Handle the case where the default status is not found
-                        ModelState.AddModelError("", "Default status not found.");
-                        return View(message);
-                    }
-                
-                 db.Messages.Add(message);
+                var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "UnRead");
+                if (defaultStatus != null)
+                {
+                    message.StatusId = defaultStatus.StatusId;
+                }
+                else
+                {
+                    // Handle the case where the default status is not found
+                    ModelState.AddModelError("", "Default status not found.");
+                    return View(message);
+                }
+
+                db.Messages.Add(message);
                 db.SaveChanges();
                 TempData["SuccessMessage"] = "Message created successfully.";
-                
+
                 return RedirectToAction("Index");
             }
 
@@ -180,6 +181,55 @@ namespace PropertyRentalManagementWebSite.Controllers
             return View(message);
 
         }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "MessageId,Receiver,Sender,Message1,SendDate")] Message message)
+        //{
+        //    var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+        //    if (currentUser == null)
+        //    {
+        //        return RedirectToAction("Error"); // Replace with actual error handling
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            message.SendDate = DateTime.Now;
+        //            message.Sender = currentUser.UserId;
+
+        //            var defaultStatus = db.Statuses.FirstOrDefault(s => s.Description == "UnRead");
+        //            if (defaultStatus != null)
+        //            {
+        //                message.StatusId = defaultStatus.StatusId;
+        //            }
+        //            else
+        //            {
+        //                ModelState.AddModelError("", "Default status not found.");
+        //                return View(message);
+        //            }
+
+        //            db.Messages.Add(message);
+        //            db.SaveChanges();
+        //            TempData["SuccessMessage"] = "Message created successfully.";
+        //            return RedirectToAction("Index");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Log the error (using System.Diagnostics.Trace or any logging framework you're using)
+        //            Trace.TraceError(ex.ToString());
+        //            // Add a model state error with a generic message
+        //            ModelState.AddModelError("", ex.Message);
+        //            TempData["ErrorMessage"] = ex.Message+"An error occurred while creating the message. Please try again.";
+        //        }
+        //    }
+
+        //    // If we get here, it means ModelState is not valid, or an exception occurred
+        //    ViewBag.Receiver = new SelectList(db.Users, "UserId", "UserName", message.Receiver);
+        //    return View(message);
+        //}
+
 
         // GET: Messages/Edit/5
         public ActionResult Edit(int? id)

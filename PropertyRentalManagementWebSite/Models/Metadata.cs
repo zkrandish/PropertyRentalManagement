@@ -113,42 +113,40 @@ namespace PropertyRentalManagementWebSite.Models
         [StringLength(10, ErrorMessage = "Postal Code cannot exceed 10 characters.")]
         public string PostalCode { get; set; }
     }
-    [MetadataType(typeof(MessageMetadata))]
-    public partial class Message
-    {
-        // Assuming your Message model is defined here.
-        // This class will be linked with the metadata class below.
-    }
+    //[MetadataType(typeof(MessageMetadata))]
+    //public partial class Message
+    //{
+    //    // Assuming your Message model is defined here.
+    //    // This class will be linked with the metadata class below.
+    //}
 
-    public class MessageMetadata
-    {
-        [Required]
-        [Display(Name = "Message ID")]
-        public int MessageId { get; set; }
+    //public class MessageMetadata
+    //{
+       
 
-        [Required]
-        [ForeignKey("User")] // Assuming a User table with UserId as the primary key.
-        [Display(Name = "Receiver ID")]
-        public int Receiver { get; set; }
+    //   // [Required]
+    //    [ForeignKey("User")] // Assuming a User table with UserId as the primary key.
+    //    [Display(Name = "Receiver ID")]
+    //    public int Receiver { get; set; }
 
-        [Required]
-        [ForeignKey("User")] // Assuming a User table with UserId as the primary key.
-        [Display(Name = "Sender ID")]
-        public int Sender { get; set; }
+    //    //[Required]
+    //    [ForeignKey("User")] // Assuming a User table with UserId as the primary key.
+    //    [Display(Name = "Sender ID")]
+    //    public int Sender { get; set; }
 
-        [Required(ErrorMessage = "Message content is required.")]
-        [DataType(DataType.MultilineText)]
-        [Display(Name = "Message Content")]
-        public string Message1 { get; set; }
+    //    [Required(ErrorMessage = "Message content is required.")]
+    //    [DataType(DataType.MultilineText)]
+    //    [Display(Name = "Message Content")]
+    //    public string Message1 { get; set; }
 
-        [Required]
-        [DataType(DataType.DateTime)]
-        [Display(Name = "Send Date")]
-        public DateTime SendDate { get; set; }
+    //    //[Required]
+    //    [DataType(DataType.DateTime)]
+    //    [Display(Name = "Send Date")]
+    //    public DateTime SendDate { get; set; }
 
-        [Required]
-        [ForeignKey("Status")] // Assuming a Status table with StatusId as the primary key.
-        [Display(Name = "Status ID")]
-        public int StatusId { get; set; }
-    }
+    //    //[Required]
+    //    //[ForeignKey("Status")] // Assuming a Status table with StatusId as the primary key.
+    //    //[Display(Name = "Status ID")]
+    //    //public int StatusId { get; set; }
+    //}
 }

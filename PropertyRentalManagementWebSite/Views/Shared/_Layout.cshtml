@@ -30,11 +30,26 @@
                         <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li class="nav-item">@Html.ActionLink("Buildings", "Index", "Buildings", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        @if (Session["UserRole"] as string == "Tenant")
+                        {
+                            <li class="nav-item">@Html.ActionLink("Tenant Dashboard", "Index", "TenantDashboard", new { area = "" }, new { @class = "nav-link" })</li>
+
+                        }
+                        @if (Session["UserRole"] as string == "Owner")
+                        {
+                            <li class="nav-item">@Html.ActionLink("Owner Dashboard", "Index", "OwnerDashboard", new { area = "" }, new { @class = "nav-link" })</li>
+                            
+                        }
+                        @if (Session["UserRole"] as string == "Manager")
+                        {
+                            <li class="nav-item">@Html.ActionLink("anager Dashboard", "Index", "ManagerDashboard", new { area = "" }, new { @class = "nav-link" })</li>
+                           
+                        }
                         @{
                             if (isLoggedIn)
                             {
-                                <li>@Html.ActionLink("Hello "+User.Identity.Name+"!", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                                <li>@Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                                 <li>@Html.ActionLink("Signout", "signout", "Account", new { area = "" }, new { @class = "nav-link" })</li>
 
                             }

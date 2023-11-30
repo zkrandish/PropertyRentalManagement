@@ -44,8 +44,11 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Buildings/Create
         public ActionResult Create()
         {
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "FirstName");
-            return View();
+            var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var currentUserId = currentUser?.UserId;
+            ViewBag.CurrentUserId = currentUser.UserId; // assuming you have a User object
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "UserName");
+            return View(new Building());
         }
 
         // POST: Buildings/Create
