@@ -17,9 +17,13 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Apartments
         public ActionResult Index(int? searchStatus, string searchProvince, string searchCity, string searchType)
         {
+         
+            if (Session["UserRole"] as string != "Manager" && Session["UserRole"] as string != "Owner")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
             var userRole = Session["UserRole"] as string;
-            
-            
 
             // Start with a query that includes related data
             IQueryable<Apartment> apartmentsQuery = db.Apartments.Include(a => a.Building).Include(a => a.Status).Include(a => a.User).Include(a => a.User1);

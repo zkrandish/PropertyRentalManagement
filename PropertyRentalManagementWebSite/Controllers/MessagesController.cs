@@ -69,6 +69,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Messages/Create
         public ActionResult Create(int? replyToSenderId = null)
         {
+            if (Session["UserRole"] as string != "Manager" && Session["UserRole"] as string != "Tenant")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             // Find the UserId based on the UserName in the database
             var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
             ViewBag.IsReply = false;

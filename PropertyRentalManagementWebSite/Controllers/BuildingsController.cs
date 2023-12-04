@@ -17,7 +17,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Buildings
         public ActionResult Index()
         {
-            if (Session["UserRole"] as string != "Manager")
+            if (Session["UserRole"] as string != "Manager"&& Session["UserRole"] as string != "Owner")
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
@@ -44,6 +44,11 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Buildings/Create
         public ActionResult Create()
         {
+            if (Session["UserRole"] as string != "Manager" && Session["UserRole"] as string != "Owner")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
             var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
             var currentUserId = currentUser?.UserId;
             ViewBag.CurrentUserId = currentUser.UserId; // assuming you have a User object

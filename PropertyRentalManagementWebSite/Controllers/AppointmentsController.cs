@@ -18,6 +18,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Appointments
         public ActionResult Index()
         {
+            if (Session["UserRole"] as string != "Manager" && Session["UserRole"] as string != "Tenant")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
             var currentUserId = currentUser?.UserId;
             string userRole = Session["UserRole"] as string;
@@ -69,6 +73,10 @@ namespace PropertyRentalManagementWebSite.Controllers
         // GET: Appointments/Create
         public ActionResult Create()
         {
+            if (Session["UserRole"] as string != "Manager" && Session["UserRole"] as string != "Tenant")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             // Find the UserId based on the UserName in the database
             var currentUser = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
