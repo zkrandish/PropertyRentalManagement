@@ -18,7 +18,7 @@ namespace PropertyRentalManagementWebSite.Controllers
         public ActionResult Index(int? searchStatus, string searchProvince, string searchCity, string searchType)
         {
          
-            if (Session["UserRole"] as string != "Manager" && Session["UserRole"] as string != "Owner")
+            if (Session["UserRole"] as string != "Manager" && Session["UserRole"] as string != "Owner" && Session["UserRole"] as string != "Tenant")
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
